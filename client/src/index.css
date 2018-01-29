@@ -1,6 +1,17 @@
-.container { background-color:green;
-            color:white;
-            text-align:center;
+#searchContainer{
+    background-color:rgb(113, 216, 113);
+    color:white;
+    text-align:center;
+    border-radius: 10px;
+    margin-bottom:2%;
+}
+
+#responseContainer{
+    background-color:white;
+    color:white;
+    text-align:center;
+    background-color:rgb(113, 216, 113);
+    border-radius: 10px;
 }
 
 .button {
@@ -9,4 +20,17 @@
 
 .inputField {
     color:black;
+}
+
+.grocerySection {text-align:center;
+            
+                border:rgb(113, 216, 113) 2px solid;
+               background-color:white;
+               
+}
+
+.recipeSection{text-align:center;
+                border:rgb(113, 216, 113) 2px solid;
+                background-color:white;
+                
 }
