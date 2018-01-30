@@ -6,13 +6,15 @@ const axios = require("axios");
 const foodFunction = {
     getRecipes: function (req, res){
         const ingredients = req.query.food;
-        const id = "${12140cd6}"
-        const key = "${36d786cde038c9498b23eb1b8c0b8d97}"
+        const id = "8dc2b8c8"
+        const key = "b468939121e6d4c0b545c707a78606ff"
         console.log(ingredients);
         
 
-        axios.get("https://api.edamam.com/search?q=" + ingredients + "&app_id=" + id + "&app_key=" + key).then(function(data){
-            res.json(data.data);
+        axios.get("https://api.edamam.com/search?q=" + ingredients + "&app_id=" + id + "&app_key=" + key)
+        .then(function(response){
+            // console.log(response.data.hits);
+            res.json(response.data.hits);
         }).catch(function(err){
             console.log(err);
         })
