@@ -8,7 +8,8 @@ class Main extends React.Component {
         super(props);
         this.state = {
             groceries: [],
-            foodItem: ""
+            foodItem: "",
+            purchased: false
         };
     }
 
@@ -30,19 +31,29 @@ class Main extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        // API.saveGroceries({
-        API.getRecipes({
-            food: this.state.foodItem
-        }).then(function (data) {
-            console.log(data);
-
-
-        }).catch(function (err) {
-            console.log(err);
+        API.saveGroceries({
+            food: this.state.foodItem,
+            purchased: false
         })
+        .then( res => console.log(res))
+        .catch(err => console.log("Save error:" + err))
 
         // console.log("the handlesubmit button has been hit " + this.state.foodItem)
     }
+
+
+    // getRecipes = () {
+    //     API.getRecipes({
+    //         food: this.state.foodItem
+    //     }).then(function (data) {
+    //         console.log(data);
+
+
+    //     }).catch(function (err) {
+    //         console.log(err);
+    //     })
+
+    // }
 
 
 
@@ -70,9 +81,7 @@ class Main extends React.Component {
                         <h4 className="sectionTitle">Grocery List</h4>
                         <br/>
                         <GroceryList>
-                            <GroceryItem>
-
-                            </GroceryItem>
+                            
                         </GroceryList>
                     </div>
 
@@ -80,8 +89,7 @@ class Main extends React.Component {
                     <div className="recipeSection col-lg-6 col-md-6 col-sm-6">
                         <h4 className="sectionTitle">Recipes</h4>
                         <Recipes>
-                            <IndividualRecipes>
-                            </IndividualRecipes>    
+                             
                         </Recipes>
                     </div>
 

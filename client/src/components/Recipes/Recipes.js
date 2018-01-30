@@ -4,9 +4,9 @@ import "./Recipes.css";
 class Recipes extends React.Component {
     render() {
         return (
-            <li className="list-group">
+            <ul className="list-group">
                 {this.props.children}
-            </li>
+            </ul>
         )
     }
 }

@@ -5,7 +5,7 @@ export default {
    saveGroceries: function (groceryItem){
        console.log("the save grocery route has been hit " + groceryItem.food);
        console.log(groceryItem)
-
+       return axios.post("/api/groceries", groceryItem);
    },
 
    //create a route for getting groceries from database
