@@ -41,12 +41,24 @@ const foodFunction = {
             .find(req.query)
             .then(dbModel => res.json (dbModel))
             .catch(err => res.status(422).json(err))
+    },
+
+    delete: function (req, res) {
+        //this route deletes groceries from the database.
+        console.log("hello");
+        console.log(req.params.id);
+       db.grocerylist
+            .findById({ _id: req.params.id})
+            .then(dbModel => dbModel.remove())
+            .then(dbMode => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
     }
 }
 
 router.get("/api/recipes", foodFunction.getRecipes)
 router.post("/api/groceries", foodFunction.create)
 router.get("/api/groceries", foodFunction.read)
+router.delete("/api/groceries:id", foodFunction.delete)
 
 
 // If no API routes are hit, send the React app

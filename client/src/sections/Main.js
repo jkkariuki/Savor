@@ -20,7 +20,7 @@ class Main extends React.Component {
     }
 
     //this function retrieves groceries from the database, loops through them, pushes them to an array and then updates the states of groceries with that array.
-    
+
     getGroceries = () => {
         console.log("the getGrocery function has been hit");
         API.getGroceries()
@@ -35,6 +35,13 @@ class Main extends React.Component {
             }
             )
 
+    }
+
+    deleteGroceries = (item) => {
+        console.log("the main file delete route is being hit" + item);
+        API.deleteGroceries(item)
+        .then (() => this.getGroceries())
+        .catch(err => console.log(err));
     }
 
 
@@ -107,15 +114,19 @@ class Main extends React.Component {
                         <br />
                         <GroceryList>
                             {this.state.groceries.map(item => {
-                                return(
-                                <GroceryItem>
-                                    <strong>
-                                        {"Item: " + item.food}
-                                        <br />
-                                        {/* {"purchased: " + item.purchased}
+                                return (
+                                    <GroceryItem>
+                                        <strong>
+                                            {"Item: " + item.food}
+                                            <br />
+                                            {/* {"purchased: " + item.purchased}
                                         <br /> */}
-                                    </strong>
-                                </GroceryItem>
+                                        </strong>
+                                        <button
+                                        onClick={() => this.deleteGroceries(item._id)}
+                                        >Delete
+                                    </button>
+                                    </GroceryItem>
                                 );
 
                             })}
