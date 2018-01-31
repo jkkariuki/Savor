@@ -50,7 +50,7 @@ const foodFunction = {
        db.grocerylist
             .findById({ _id: req.params.id})
             .then(dbModel => dbModel.remove())
-            .then(dbMode => res.json(dbModel))
+            .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
     }
 }
