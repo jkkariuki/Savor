@@ -11,6 +11,7 @@ export default {
    //create a route for getting groceries from database
    getGroceries: function(){
        console.log("the get grocery route has been hit");
+       return axios.get("/api/groceries")
    },
 
    //create a route for deleting groceries from database

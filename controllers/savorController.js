@@ -28,16 +28,25 @@ const foodFunction = {
         console.log("the create route is being hit");
         console.log(JSON.stringify(req.body));
         db.grocerylist
-        
             .create(req.body)
             .then(dbModel => res.json(dbModel))
             .catch(err => console.log(err));
 
+    },
+
+    read: function (req, res) {
+      //this route sends database grocery items to front end
+      console.log("the read route has been hit");
+        db.grocerylist
+            .find(req.query)
+            .then(dbModel => res.json (dbModel))
+            .catch(err => res.status(422).json(err))
     }
 }
 
 router.get("/api/recipes", foodFunction.getRecipes)
 router.post("/api/groceries", foodFunction.create)
+router.get("/api/groceries", foodFunction.read)
 
 
 // If no API routes are hit, send the React app
