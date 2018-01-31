@@ -14,12 +14,13 @@ class Main extends React.Component {
     }
 
 
-
+    //when the page loads the getGroceries function is called
     componentDidMount() {
         this.getGroceries();
     }
 
-    //this function reads groceries from the database
+    //this function retrieves groceries from the database, loops through them, pushes them to an array and then updates the states of groceries with that array.
+    
     getGroceries = () => {
         console.log("the getGrocery function has been hit");
         API.getGroceries()
@@ -59,7 +60,7 @@ class Main extends React.Component {
             food: this.state.foodItem,
             purchased: false
         })
-            .then(res => console.log(res))
+            .then(() => this.getGroceries())
             .catch(err => console.log("Save error:" + err))
 
         // console.log("the handlesubmit button has been hit " + this.state.foodItem)
