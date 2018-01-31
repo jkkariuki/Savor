@@ -1,7 +1,7 @@
 import React from "react";
 import API from "../utils/API";
 import { GroceryList, GroceryItem } from "../components/GroceryList";
-import { Recipes, IndividualRecipes} from "../components/Recipes";
+import { Recipes, IndividualRecipes } from "../components/Recipes";
 
 class Main extends React.Component {
     constructor(props) {
@@ -12,6 +12,38 @@ class Main extends React.Component {
             purchased: false
         };
     }
+
+
+    //when the page loads the getGroceries function is called
+    componentDidMount() {
+        this.getGroceries();
+    }
+
+    //this function retrieves groceries from the database, loops through them, pushes them to an array and then updates the states of groceries with that array.
+
+    getGroceries = () => {
+        console.log("the getGrocery function has been hit");
+        API.getGroceries()
+            .then(res => {
+                console.log(res);
+                let savedItems = []
+                for (let i = 0; i < res.data.length; i++) {
+                    savedItems.push(res.data[i])
+                }
+                this.setState({ groceries: savedItems })
+                console.log("groceries " + this.state.groceries);
+            }
+            )
+
+    }
+
+    deleteGroceries = (item) => {
+        console.log("the main file delete route is being hit" + item);
+        API.deleteGroceries(item)
+        .then (() => this.getGroceries())
+        .catch(err => console.log(err));
+    }
+
 
     handleChange = (event) => {
         console.log(event);
@@ -35,8 +67,8 @@ class Main extends React.Component {
             food: this.state.foodItem,
             purchased: false
         })
-        .then( res => console.log(res))
-        .catch(err => console.log("Save error:" + err))
+            .then(() => this.getGroceries())
+            .catch(err => console.log("Save error:" + err))
 
         // console.log("the handlesubmit button has been hit " + this.state.foodItem)
     }
@@ -79,9 +111,26 @@ class Main extends React.Component {
 
                     <div className="grocerySection  col-lg-6 col-md-6 col-sm-6">
                         <h4 className="sectionTitle">Grocery List</h4>
-                        <br/>
+                        <br />
                         <GroceryList>
-                            
+                            {this.state.groceries.map(item => {
+                                return (
+                                    <GroceryItem>
+                                        <strong>
+                                            {"Item: " + item.food}
+                                            <br />
+                                            {/* {"purchased: " + item.purchased}
+                                        <br /> */}
+                                        </strong>
+                                        <button
+                                        onClick={() => this.deleteGroceries(item._id)}
+                                        >Delete
+                                    </button>
+                                    </GroceryItem>
+                                );
+
+                            })}
+
                         </GroceryList>
                     </div>
 
@@ -89,8 +138,9 @@ class Main extends React.Component {
                     <div className="recipeSection col-lg-6 col-md-6 col-sm-6">
                         <h4 className="sectionTitle">Recipes</h4>
                         <br/>
+                        <br />
                         <Recipes>
-                             
+
                         </Recipes>
                     </div>
 
