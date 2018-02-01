@@ -1,4 +1,5 @@
 form {
+<<<<<<< HEAD
     margin:0 auto;
     width:300px;
     margin-top: 300px
@@ -27,3 +28,33 @@ form {
   #form-switch:checked~#login-form {
     display:none
   }
+=======
+  margin:0 auto;
+  width:300px;
+  margin-top: 300px
+}
+input {
+  margin-bottom:3px;
+  padding:10px;
+  width: 100%;
+  border:1px solid #CCC
+}
+button {
+  padding:10px
+}
+label {
+  cursor:pointer
+}
+#form-switch {
+  display:none
+}
+#register-form {
+  display:none
+}
+#form-switch:checked~#register-form {
+  display:block
+}
+#form-switch:checked~#login-form {
+  display:none
+}
+>>>>>>> 8a53aefb7bd2103a9472836c1327b76c461b74a1
