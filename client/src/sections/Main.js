@@ -68,6 +68,7 @@ class Main extends React.Component {
             purchased: false
         })
             .then(() => this.getGroceries())
+            .then(this.setState({foodItem: ""}))
             .catch(err => console.log("Save error:" + err))
 
         // console.log("the handlesubmit button has been hit " + this.state.foodItem)
