@@ -1,55 +1,57 @@
 const express = require("express");
+const path = require('path');
+const cookieParser = require('cookie-parser');
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const savorController = require("./controllers/savorController");
-const app = express();
 const PORT = process.env.PORT || 3001;
-const User = require("./models/user");
+
 // Authentication Packages
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const authentication = require("./controllers/authentication")
 
 // connect to the database and load models
-require('./models/user');
+
+const app = express();
+
+//Controllers
+const savorController = require("./controllers/savorController");
+const authentication = require("./controllers/authentication")
+
+const users = require('./client/src/utils/usersAPI');
+
+// Authentication Packages
+
 
 
 // Configure body parser for axios requests
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
-app.use(bodyParser.json());
-// Serve up static assets
-
+// Cookie Parser middleware initialization
+app.use(cookieParser());
+// Initialize express session
 app.use(require('express-session')({
-  secret: "random string",
-  sesave: false,
+  secret: 'lskjklfsj',
+  resave: false,
   saveUninitialized: false
 }));
+// Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
+// Serve up static assets
+
 app.use(express.static("client/build"));
 app.use('/api/authentication', authentication);
 
 // Add routes, both API and view
 app.use(savorController);
+app.use(users);
 
-
+const User = require('./models/user');
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-
-// Passport middleware
-
-// Passport strategies
-// const localSignupStrategy = require('./controllers/userController');
-// const localLoginStrategy = require('./controllers/loginController');
-// passport.use('local-signup', localSignupStrategy);
-// passport.use('local-login', localLoginStrategy);
-
-// pass authentication checker middleware
-// const authCheckMiddleware = require('./ser') 
 
 // Set up promises with mongoose
 mongoose.Promise = Promise;

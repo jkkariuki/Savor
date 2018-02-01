@@ -5,17 +5,25 @@ const User = require('../models/user.js');
 const router = express.Router()
 ;
 
-router.post("/register", (req, res)=> {
-    const newUser = new User(req.body);
+// router.post("/register", (req, res)=> {
+//     const newUser = new User(req.body);
 
-    User.register(newUser, req.body.password, (err, user) => {
-        if(err){
-            return res.send(JSON.stringify({error: err}));
-        }
-        return res.send(JSON.stringify({user}));
-    })
-});
+//     User.register(newUser, req.body.password, (err, user) => {
+//         if(err){
+//             return res.send(JSON.stringify({error: err}));
+//         }
+//         return res.send(JSON.stringify({user}));
+//     })
+// });
 
+const userFunction = {
+    create: function (req, res){
+        db.Users.create(req.body)
+        .then(dbModel => res.json(dbModel)).catch(err => console.log(err));
+    }
+}
+
+router.post("/api/users", userFunction.create) 
 module.export = router;
 
 

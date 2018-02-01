@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import API from "../../utils/AuthApi"
 import "./LoginRegister.css"
 
 
@@ -28,8 +29,21 @@ class Auth extends React.Component {
         });
       };
 
-      handleFromSubmit = (event) => {
+      handleFormSubmit = (event) => {
           event.preventDefault();
+          API.saveUser({
+              userInfo: {
+                username: this.state.username,
+                password: this.state.password,
+                email: this.state.email
+              }
+          }).then(this.setState({
+              username: "",
+              password: "",
+              email: "",
+            })).catch(err => console.log("Save error:" + err))
+
+
       }
 
     render() {
@@ -41,22 +55,22 @@ class Auth extends React.Component {
 
                 <form id='login-form' action="" method='post'>
                     <h1 className="title">Savor</h1>
-                    <input type="text" placeholder="Username" value = {this.setState.username} required onChange = {this.handleInputChange}
+                    <input type="text" placeholder="Username"  required onChange = {this.handleInputChange}
                     name= "username" value = {this.state.username}/>
                     <input type="password" placeholder="Password" required onChange = {this.handleInputChange}
-                    name = "password" value = {this.setState.password}/>
+                    name = "password" value = {this.state.password}/>
                     <button type='submit'>Login</button>
-                    <label for='form-switch'><span>Register</span></label>
+                    <label htmlFor='form-switch'><span>Register</span></label>
                 </form>
 
-                <form id='register-form' action="" method='post'>
-                    <input type="text" placeholder="Username" required onChange = {handleInputChange} name = "reg-username"/>
-                    <input type="email" placeholder="Email" required onChange = {this.handleInputChange} name="reg-email" value = {this.setState.email}/>
-                    <input type="password" placeholder="Password" required onChange = {this.handleInputChange} name= "reg-password" value = {this.setState.password} />
-                    <input type="password" placeholder="Re Password" required onChange = {this.handleInputChange} value = {this.setState.password}/>
+                <form id='register-form' action="" method='post' onSubmit = {this.handleFormSubmit}>
+                    <input type="text" placeholder="Username" required onChange = {handleInputChange} name = "username"/>
+                    <input type="email" placeholder="Email" required onChange = {this.handleInputChange} name="email" value = {this.state.email}/>
+                    <input type="password" placeholder="Password" required onChange = {this.handleInputChange} name= "password" value = {this.state.password} />
+                    <input type="password" placeholder="Re Password" required onChange = {this.handleInputChange} name= "confirmPass" value = {this.state.password}/>
                     <button type='submit'>Register</button>
-                    <label for='form-switch'>Already Member ? Sign In Now..</label>
-                </form>
+                    <label htmlFor='form-switch'>Already Member ? Sign In Now..</label>
+                </form >
             </div>
         )
     }
