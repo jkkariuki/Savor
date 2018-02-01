@@ -15,10 +15,16 @@ export default {
    },
 
    //create a route for deleting groceries from database
-
    deleteGroceries: function(id){
        console.log("the delete grocery route has been hit" + id);
        return axios.delete("/api/groceries" + id);
+   },
+   
+   //create a route for updating the groceries
+   updateGroceries: function(id, update){
+       console.log({update});
+       console.log("this route will update " + id + " with " + update.purchased);
+       return axios.patch("/api/groceries" + id, update );
    },
 
    //create a route for making call to api - plugging in food items

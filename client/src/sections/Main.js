@@ -40,8 +40,15 @@ class Main extends React.Component {
     deleteGroceries = (item) => {
         console.log("the main file delete route is being hit" + item);
         API.deleteGroceries(item)
-        .then (() => this.getGroceries())
-        .catch(err => console.log(err));
+            .then(() => this.getGroceries())
+            .catch(err => console.log(err));
+    }
+
+    purchaseGroceries = (id) => {
+        console.log("purchased item " + id);
+        API.updateGroceries(id, {purchased: true})
+        .then((res)=> console.log(res))
+        .then(()=> this.getGroceries())    
     }
 
 
@@ -68,7 +75,7 @@ class Main extends React.Component {
             purchased: false
         })
             .then(() => this.getGroceries())
-            .then(this.setState({foodItem: ""}))
+            .then(this.setState({ foodItem: "" }))
             .catch(err => console.log("Save error:" + err))
 
         // console.log("the handlesubmit button has been hit " + this.state.foodItem)
@@ -115,20 +122,44 @@ class Main extends React.Component {
                         <br />
                         <GroceryList>
                             {this.state.groceries.map(item => {
-                                return (
-                                    <GroceryItem>
-                                        <strong>
-                                            {"Item: " + item.food}
-                                            <br />
-                                            {/* {"purchased: " + item.purchased}
+                                if (item.purchased === true) {
+                                    return (
+                                        <GroceryItem>
+                                            <strong>
+                                                {"Item: " + item.food + "✓"}
+                                                <br />
+                                                {/* {"purchased: " + item.purchased}
                                         <br /> */}
-                                        </strong>
-                                        <button
-                                        onClick={() => this.deleteGroceries(item._id)}
-                                        >Delete
+                                            </strong>
+
+                                            <button
+                                                onClick={() => this.deleteGroceries(item._id)}
+                                            >Delete
                                     </button>
-                                    </GroceryItem>
-                                );
+                                        </GroceryItem>
+                                    );
+                                } else {
+                                    return (
+                                        <GroceryItem>
+                                            <strong>
+                                                {"Item: " + item.food}
+                                                <br />
+                                                {/* {"purchased: " + item.purchased}
+                                        <br /> */}
+                                            </strong>
+                                            <button
+                                                onClick={() => this.purchaseGroceries(item._id)}
+                                            >Purchased
+                                    </button>
+                                            <button
+                                                onClick={() => this.deleteGroceries(item._id)}
+                                            >Delete
+                                    </button>
+                                        </GroceryItem>
+                                    );
+
+
+                                }
 
                             })}
 
