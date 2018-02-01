@@ -8,6 +8,7 @@ class Main extends React.Component {
         super(props);
         this.state = {
             groceries: [],
+            apiParams: [],
             foodItem: "",
             purchased: false
         };
@@ -32,8 +33,8 @@ class Main extends React.Component {
                 }
                 this.setState({ groceries: savedItems })
                 console.log("groceries " + this.state.groceries);
-            }
-            )
+            })
+            .then(() => this.getRecipes(this.state.groceries))
 
     }
 
@@ -46,9 +47,9 @@ class Main extends React.Component {
 
     purchaseGroceries = (id) => {
         console.log("purchased item " + id);
-        API.updateGroceries(id, {purchased: true})
-        .then((res)=> console.log(res))
-        .then(()=> this.getGroceries())    
+        API.updateGroceries(id, { purchased: true })
+            .then((res) => console.log(res))
+            .then(() => this.getGroceries())
     }
 
 
@@ -82,18 +83,29 @@ class Main extends React.Component {
     }
 
 
-    // getRecipes = () {
-    //     API.getRecipes({
-    //         food: this.state.foodItem
-    //     }).then(function (data) {
-    //         console.log(data);
+    getRecipes = (groceries) => {
+        console.log(groceries);
+        let array= []
+
+        this.state.groceries.map(item => {
+            if (item.purchased === true) {
+                array.push(item.food);
+            }
+        })
+            this.setState({apiParams: array})
+            console.log("api parms " + this.state.apiParams);
+        API.getRecipes({
+            food: this.state.apiParams
+        })
+        .then(function (data) {
+            console.log(data);
 
 
-    //     }).catch(function (err) {
-    //         console.log(err);
-    //     })
-
-    // }
+        }).catch(function (err) {
+            console.log(err);
+        })
+    
+    }
 
 
 

@@ -29,7 +29,8 @@ export default {
 
    //create a route for making call to api - plugging in food items
    getRecipes: function(groceryItem){
-       console.log("the get recipe route has been hit" + groceryItem.food );
+       console.log("API food "+ groceryItem);
+       console.log("the get recipe route has been hit" + groceryItem);
        return axios.get("/api/recipes", {params: groceryItem});
    }
 
