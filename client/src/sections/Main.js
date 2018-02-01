@@ -10,7 +10,8 @@ class Main extends React.Component {
             groceries: [],
             apiParams: [],
             foodItem: "",
-            purchased: false
+            purchased: false,
+            use: false
         };
     }
 
@@ -52,6 +53,22 @@ class Main extends React.Component {
             .then(() => this.getGroceries())
     }
 
+    useGroceries = (id) => {
+        console.log("used item " + id);
+
+        if (this.state.use === false) {
+            this.setState({use : true})
+        API.useGroceries(id, { use: true })
+            .then((res) => console.log(res))
+            .then(() => this.getGroceries())
+        }else{
+            this.setState({use: false})
+            API.useGroceries(id, { use: false })
+            .then((res) => console.log(res))
+            .then(() => this.getGroceries())
+        }
+    }
+
 
     handleChange = (event) => {
         console.log(event);
@@ -85,15 +102,16 @@ class Main extends React.Component {
 
     getRecipes = (groceries) => {
         console.log(groceries);
-        let array= []
+        let array = []
 
+        //all you have to do is change purcased to use in order to switch
         this.state.groceries.map(item => {
-            if (item.purchased === true) {
+            if (item.use === true) {
                 array.push(item.food);
             }
         })
-            this.setState({apiParams: array})
-            console.log("api parms " + this.state.apiParams);
+        this.setState({ apiParams: array })
+        console.log("api parms " + this.state.apiParams);
         API.getRecipes({
             food: this.state.apiParams
         })
@@ -104,7 +122,7 @@ class Main extends React.Component {
         }).catch(function (err) {
             console.log(err);
         })
-    
+
     }
 
 
@@ -134,30 +152,52 @@ class Main extends React.Component {
                         <br />
                         <GroceryList>
                             {this.state.groceries.map(item => {
-                                if (item.purchased === true) {
+                                if (item.purchased === true && item.use === false) {
                                     return (
                                         <GroceryItem>
                                             <strong>
-                                                {"Item: " + item.food + "✓"}
+                                                <strike> {"Item: " + item.food}</strike>
                                                 <br />
-                                                {/* {"purchased: " + item.purchased}
-                                        <br /> */}
+
                                             </strong>
 
                                             <button
                                                 onClick={() => this.deleteGroceries(item._id)}
                                             >Delete
                                     </button>
+
+                                            <button
+                                                onClick={() => this.useGroceries(item._id)}
+                                            >use
+                                    </button>
                                         </GroceryItem>
                                     );
-                                } else {
+                                } else if (item.purchased === true && item.use === true) {
+                                    return (
+                                        <GroceryItem>
+                                            <strong>
+                                                <strike> {"Item: " + item.food}</strike>
+                                                <h4> ✓</h4>
+                                            </strong>
+
+                                            <button
+                                                onClick={() => this.deleteGroceries(item._id)}
+                                            >Delete
+                                    </button>
+                                            <button
+                                                onClick={() => this.useGroceries(item._id)}
+                                            >unuse
+                                    </button>
+                                        </GroceryItem>
+                                    );
+                                }
+                                else {
                                     return (
                                         <GroceryItem>
                                             <strong>
                                                 {"Item: " + item.food}
                                                 <br />
-                                                {/* {"purchased: " + item.purchased}
-                                        <br /> */}
+
                                             </strong>
                                             <button
                                                 onClick={() => this.purchaseGroceries(item._id)}
@@ -169,10 +209,7 @@ class Main extends React.Component {
                                     </button>
                                         </GroceryItem>
                                     );
-
-
                                 }
-
                             })}
 
                         </GroceryList>

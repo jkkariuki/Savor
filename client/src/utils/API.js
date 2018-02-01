@@ -27,6 +27,12 @@ export default {
        return axios.patch("/api/groceries" + id, update );
    },
 
+   useGroceries: function(id, update){
+       console.log({update});
+       console.log("this route will update " + id + " with " + update.use);
+       return axios.patch("/api/useGroceries" + id, update );
+   },
+
    //create a route for making call to api - plugging in food items
    getRecipes: function(groceryItem){
        console.log("API food "+ groceryItem);
