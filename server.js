@@ -4,9 +4,11 @@ const mongoose = require("mongoose");
 const savorController = require("./controllers/savorController");
 const app = express();
 const PORT = process.env.PORT || 3001;
-
+const User = require("./models/user");
 // Authentication Packages
 const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const authentication = require("./controllers/authentication")
 
 // connect to the database and load models
 require('./models/user');
@@ -18,17 +20,33 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 // Serve up static assets
+
+app.use(require('express-session')({
+  secret: "random string",
+  sesave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static("client/build"));
+app.use('/api/authentication', authentication);
+
 // Add routes, both API and view
 app.use(savorController);
+
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
 // Passport middleware
-app.use(passport.initialize());
 
 // Passport strategies
-const localSignupStrategy = require('./controllers/userController');
-const localLoginStrategy = require('./controllers/loginController');
-passport.use('local-signup', localSignupStrategy);
-passport.use('local-login', localLoginStrategy);
+// const localSignupStrategy = require('./controllers/userController');
+// const localLoginStrategy = require('./controllers/loginController');
+// passport.use('local-signup', localSignupStrategy);
+// passport.use('local-login', localLoginStrategy);
 
 // pass authentication checker middleware
 // const authCheckMiddleware = require('./ser') 
