@@ -25,6 +25,18 @@ export default {
    getRecipes: function(groceryItem){
        console.log("the get recipe route has been hit" + groceryItem.food );
        return axios.get("/api/recipes", {params: groceryItem});
+   },
+   // User API calls
+   getCurrentUser: function(){
+       return axios.get('/auth/api/currentuser');
+   },
+
+   addNewUser: function(user){
+       return axios.post('/auth/signup', { user });
+   },
+   
+   loginUser: function(username, password){
+       return axios.post('/auth/login', {username, password});
    }
 
 

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import API from "../../utils/AuthApi"
+import API from "../../utils/API"
 import "./LoginRegister.css"
 
 

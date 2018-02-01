@@ -1,3 +1,7 @@
+const savorController = require('./savorController');
+const authRoutes = require('./authRoutes');
+
 module.exports = {
-    router: require("./savorController")
+    savorController,
+    authRoutes
 };
