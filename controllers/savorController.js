@@ -43,6 +43,22 @@ const foodFunction = {
             .catch(err => res.status(422).json(err))
     },
 
+    update: function (req, res){
+        console.log("the update route has been hit");
+        db.grocerylist
+        .findOneAndUpdate({ _id: req.params.id }, req.body)
+        .then(dbModel => res.json(dbModel))
+        .catch(err => res.status(422).json(err));
+    },
+
+    use: function(req, res){
+        console.log("the use route has been hit");
+        db.grocerylist
+        .findOneAndUpdate({ _id: req.params.id }, req.body)
+        .then(dbModel => res.json(dbModel))
+        .catch(err => res.status(422).json(err));
+    },
+
     delete: function (req, res) {
         //this route deletes groceries from the database.
         console.log("hello");
@@ -59,6 +75,8 @@ router.get("/api/recipes", foodFunction.getRecipes)
 router.post("/api/groceries", foodFunction.create)
 router.get("/api/groceries", foodFunction.read)
 router.delete("/api/groceries:id", foodFunction.delete)
+router.patch("/api/groceries:id", foodFunction.update)
+router.patch("/api/useGroceries:id", foodFunction.use)
 
 
 // If no API routes are hit, send the React app
