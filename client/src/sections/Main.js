@@ -7,12 +7,25 @@ class Main extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            //groceries holds all of the saved groceries and is updated by the save groceries function
             groceries: [],
+
+
+            //apiParams are the food search parameters you are plugging into the api, they are being sent from the getGroceries read function to the getRecipes function.
             apiParams: [],
+
+            //recipex is the array that contains the api response data, which is then being mapped over in the jsx and sent to the view.
             recipex: [],
+
+            //this is being updated when the user types in the food input and is passed to the database on submit
             foodItem: "",
+
+            //purchased is set as a default to false in the database, when the user clicks on the purchased button, it triggers an event, which passes the item's id to the purchaseGroceries function, which update purchased to true. The JSX will render differently depending on whether purchased is true or false and the api should not make a call unless purchase and use are true.
             purchased: false,
+
+            //Use is also set as a default in the db to false. It toggled by the useGroceries function, which can only be can only be clicked if an item is purchased. If clicked by the user, the event will call the useGroceries function which updates/ toggle use in the database.
             use: false
+
         };
     }
 
@@ -25,10 +38,8 @@ class Main extends React.Component {
     //this function retrieves groceries from the database, loops through them, pushes them to an array and then updates the states of groceries with that array.
 
     getGroceries = () => {
-        console.log("the getGrocery function has been hit");
         API.getGroceries()
             .then(res => {
-                console.log(res);
                 let savedItems = []
                 for (let i = 0; i < res.data.length; i++) {
                     savedItems.push(res.data[i])
@@ -86,7 +97,7 @@ class Main extends React.Component {
         });
     }
 
-    handleSubmit = (event) => {
+    saveGroceries = (event) => {
         event.preventDefault();
 
         API.saveGroceries({
@@ -107,8 +118,10 @@ class Main extends React.Component {
 
 
         array = this.state.groceries.map(item => {
-            if (item.use === true) {
+            if (item.use === true && item.purchased===true) {
                return item.food;
+            }else{
+                return [];
             }
              
         })
@@ -118,9 +131,10 @@ class Main extends React.Component {
 
     getRecipes2 = (array) => {
         const context = this;
-        console.log(array);
+
         this.setState({ apiParams: array })
         console.log("api parms " + this.state.apiParams);
+        if(context.state.apiParams.length > 0){
         API.getRecipes({
             food: this.state.apiParams
         })
@@ -132,10 +146,14 @@ class Main extends React.Component {
                 }
                 console.log(apiData);
                 context.setState({ recipex: apiData })
-                console.log(this.state.recipex);
-            }).catch(function (err) {
+                
+            })
+            .catch(function (err) {
                 console.log(err);
             })
+        }else{
+            context.setState({recipex: []})
+        }
 
     }
 
@@ -147,7 +165,7 @@ class Main extends React.Component {
             <div>
                 <div id="searchContainer" className="container">
                     <h1 className="title">Savor</h1>
-                    <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.saveGroceries}>
                         <label htmlFor="enterFoodItem">
                             Add Food to Grocery List
                             <br />
