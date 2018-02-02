@@ -47,7 +47,7 @@ router.post('/logout', (req, res) => {
     }
 });
 
-router.post('/signup', (req, res) => {
+router.post('/auth/signup', (req, res) => {
 	const { username, password } = req.body
 	// ADD VALIDATION
 	User.findOne({ 'local.username': username }, (err, userMatch) => {
@@ -70,9 +70,12 @@ router.post('/signup', (req, res) => {
 
 // Fetch current user from session
 // router.get('/api/currentuser', db.getCurrentUser);
+
 router.use(function (req, res) {
     console.log("something is off");
     res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
+
+
 
 module.exports = router;
