@@ -9,6 +9,7 @@ class Main extends React.Component {
         this.state = {
             groceries: [],
             apiParams: [],
+            recipex: [],
             foodItem: "",
             purchased: false,
             use: false
@@ -57,15 +58,15 @@ class Main extends React.Component {
         console.log("used item " + id);
 
         if (this.state.use === false) {
-            this.setState({use : true})
-        API.useGroceries(id, { use: true })
-            .then((res) => console.log(res))
-            .then(() => this.getGroceries())
-        }else{
-            this.setState({use: false})
+            this.setState({ use: true })
+            API.useGroceries(id, { use: true })
+                .then((res) => console.log(res))
+                .then(() => this.getGroceries())
+        } else {
+            this.setState({ use: false })
             API.useGroceries(id, { use: false })
-            .then((res) => console.log(res))
-            .then(() => this.getGroceries())
+                .then((res) => console.log(res))
+                .then(() => this.getGroceries())
         }
     }
 
@@ -104,24 +105,37 @@ class Main extends React.Component {
         console.log(groceries);
         let array = []
 
-        //all you have to do is change purcased to use in order to switch
-        this.state.groceries.map(item => {
+
+        array = this.state.groceries.map(item => {
             if (item.use === true) {
-                array.push(item.food);
+               return item.food;
             }
+             
         })
+        this.getRecipes2(array);
+        
+    }
+
+    getRecipes2 = (array) => {
+        const context = this;
+        console.log(array);
         this.setState({ apiParams: array })
         console.log("api parms " + this.state.apiParams);
         API.getRecipes({
             food: this.state.apiParams
         })
-        .then(function (data) {
-            console.log(data);
-
-
-        }).catch(function (err) {
-            console.log(err);
-        })
+            .then(function (data) {
+                console.log("this is the api data " + data);
+                let apiData = []
+                for (let i = 0; i < data.data.length; i++) {
+                    apiData.push(data.data[i].recipe)
+                }
+                console.log(apiData);
+                context.setState({ recipex: apiData })
+                console.log(this.state.recipex);
+            }).catch(function (err) {
+                console.log(err);
+            })
 
     }
 
@@ -168,7 +182,7 @@ class Main extends React.Component {
 
                                             <button
                                                 onClick={() => this.useGroceries(item._id)}
-                                            >use
+                                            >Query Recipe
                                     </button>
                                         </GroceryItem>
                                     );
@@ -186,7 +200,7 @@ class Main extends React.Component {
                                     </button>
                                             <button
                                                 onClick={() => this.useGroceries(item._id)}
-                                            >unuse
+                                            >Remove from Recipe
                                     </button>
                                         </GroceryItem>
                                     );
@@ -220,7 +234,16 @@ class Main extends React.Component {
                         <h4 className="sectionTitle">Recipes</h4>
                         <br />
                         <Recipes>
+                            {this.state.recipex.map(recipe => {
 
+                                return (
+                                    <IndividualRecipes>
+                                        <strong>
+                                            {"Recipe for: " + recipe.label}
+                                        </strong>
+                                    </IndividualRecipes>
+                                )
+                            })}
                         </Recipes>
                     </div>
 
