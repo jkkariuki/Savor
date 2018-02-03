@@ -2,6 +2,7 @@ import React from "react";
 import API from "../utils/API";
 import { GroceryList, GroceryItem } from "../components/GroceryList";
 import { Recipes, IndividualRecipes } from "../components/Recipes";
+// import Modal from "../components/Modal";
 
 class Main extends React.Component {
     constructor(props) {
@@ -24,7 +25,8 @@ class Main extends React.Component {
             purchased: false,
 
             //Use is also set as a default in the db to false. It toggled by the useGroceries function, which can only be can only be clicked if an item is purchased. If clicked by the user, the event will call the useGroceries function which updates/ toggle use in the database.
-            use: false
+            use: false,
+
 
         };
     }
@@ -118,15 +120,15 @@ class Main extends React.Component {
 
 
         array = this.state.groceries.map(item => {
-            if (item.use === true && item.purchased===true) {
-               return item.food;
-            }else{
+            if (item.use === true && item.purchased === true) {
+                return item.food;
+            } else {
                 return [];
             }
-             
+
         })
         this.getRecipes2(array);
-        
+
     }
 
     getRecipes2 = (array) => {
@@ -134,28 +136,30 @@ class Main extends React.Component {
 
         this.setState({ apiParams: array })
         console.log("api parms " + this.state.apiParams);
-        if(context.state.apiParams.length > 0){
-        API.getRecipes({
-            food: this.state.apiParams
-        })
-            .then(function (data) {
-                console.log("this is the api data " + data);
-                let apiData = []
-                for (let i = 0; i < data.data.length; i++) {
-                    apiData.push(data.data[i].recipe)
-                }
-                console.log(apiData);
-                context.setState({ recipex: apiData })
-                
+        if (context.state.apiParams.length > 0) {
+            API.getRecipes({
+                food: this.state.apiParams
             })
-            .catch(function (err) {
-                console.log(err);
-            })
-        }else{
-            context.setState({recipex: []})
+                .then(function (data) {
+                    console.log("this is the api data " + data);
+                    let apiData = []
+                    for (let i = 0; i < data.data.length; i++) {
+                        apiData.push(data.data[i].recipe)
+                    }
+                    console.log(apiData);
+                    context.setState({ recipex: apiData })
+
+                })
+                .catch(function (err) {
+                    console.log(err);
+                })
+        } else {
+            context.setState({ recipex: [] })
         }
 
     }
+
+
 
 
 
@@ -257,11 +261,24 @@ class Main extends React.Component {
                                 return (
                                     <IndividualRecipes>
                                         <strong>
-                                            {"Recipe for: " + recipe.label}
+                                            {recipe.label}
                                         </strong>
+                                        <br/>
+                                        <br/>
+                                        <div className="recipeImage center-block">
+                                        <img id= "image1" src ={recipe.image}/>
+                                        </div>
+                                        <br/>
+                                        {/* <button onClick={this.toggleModal}>
+                                            Open the modal
+                                        </button> */}
+
+                                       
                                     </IndividualRecipes>
+
                                 )
                             })}
+                              
                         </Recipes>
                     </div>
 
