@@ -27,6 +27,7 @@ class Main extends React.Component {
             //Use is also set as a default in the db to false. It toggled by the useGroceries function, which can only be can only be clicked if an item is purchased. If clicked by the user, the event will call the useGroceries function which updates/ toggle use in the database.
             use: false,
 
+            
 
         };
     }
@@ -160,7 +161,7 @@ class Main extends React.Component {
     }
 
 
-
+    
 
 
 
@@ -257,7 +258,7 @@ class Main extends React.Component {
                         <br />
                         <Recipes>
                             {this.state.recipex.map(recipe => {
-
+                                
                                 return (
                                     <IndividualRecipes>
                                         <strong>
@@ -269,14 +270,15 @@ class Main extends React.Component {
                                         <img id= "image1" src ={recipe.image}/>
                                         </div>
                                         <br/>
-                                        {/* <button onClick={this.toggleModal}>
-                                            Open the modal
-                                        </button> */}
+                                        <div>
+                                    {recipe.ingredientLines}
+                                     </div>   
 
                                        
                                     </IndividualRecipes>
 
                                 )
+                          
                             })}
                               
                         </Recipes>
