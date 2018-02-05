@@ -27,17 +27,17 @@ export default {
        return axios.get("/api/recipes", {params: groceryItem});
    },
    // User API calls
-   getCurrentUser: function(){
-       return axios.get('/auth/api/currentuser');
-   },
+//    getCurrentUser: function(){
+//        return axios.get('/auth/api/currentuser');
+//    },
 
-   addNewUser: function(user){
-       return axios.post('/auth/signup', { user });
-   },
+//    addNewUser: function(username, password){
+//        return axios.post('/auth/signup', { username: this.state.username, password: this.state.password });
+//    },
    
-   loginUser: function(username, password){
-       return axios.post('/auth/login', {username, password});
-   }
+//    loginUser: function(username, password){
+//        return axios.post('/auth/login', {username, password});
+//    }
 
 
 };

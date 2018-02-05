@@ -1,4 +1,7 @@
+const grocerylist = require('./grocerylist');
+const User = require('./user');
+
 module.exports = {
-    grocerylist: require("./groceryList"),
-    user: require('./user')
+    grocerylist,
+    User
 };

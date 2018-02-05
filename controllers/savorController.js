@@ -1,7 +1,7 @@
 const path = require("path");
 const router = require("express").Router();
 const axios = require("axios");
-const db = require("../models");
+const db = require("../models/GroceryList");
 
 const foodFunction = {
     getRecipes: function (req, res) {

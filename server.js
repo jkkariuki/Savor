@@ -51,9 +51,6 @@ mongoose.connect(dbURI)
 
 app.use('/api', savorController);
 app.use('/auth', authRoutes);
-app.get('*', function (request, response) {
-  response.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-});
 
 // Start the API server
 app.listen(PORT, function () {

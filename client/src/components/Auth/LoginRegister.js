@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import API from "../../utils/API"
-import "./LoginRegister.css"
-
+import API from "../../utils/API";
+import "./LoginRegister.css";
+import { Redirect } from 'react-router-dom';
+import axios from 'axios';
 
 
 class Auth extends React.Component {
@@ -11,18 +12,15 @@ class Auth extends React.Component {
         this.state = {
             username: "",
             password: "",
+            confirmPasword: "",
             email: ""
         };
     }
 
     handleInputChange = (event) => {
-        console.log(event);
         const target = event.target;
-        console.log(event.target);
         const value = target.value
-        console.log(target.value);
         const name = target.name;
-        console.log(target.name);
 
         this.setState({
           [name]: value
@@ -30,21 +28,24 @@ class Auth extends React.Component {
       };
 
       handleFormSubmit = (event) => {
-          event.preventDefault();
-          API.saveUser({
-              userInfo: {
-                username: this.state.username,
-                password: this.state.password,
-                email: this.state.email
-              }
-          }).then(this.setState({
-              username: "",
-              password: "",
-              email: "",
-            })).catch(err => console.log("Save error:" + err))
-
-
-      }
+        event.preventDefault()
+		// TODO - validate!
+		axios.post('/auth/signup', {
+				username: this.state.username,
+				password: this.state.password
+			})
+			.then(response => {
+				console.log(response)
+				if (!response.data.errmsg) {
+					console.log('youre good')
+					this.setState({
+						redirectTo: '/'
+					})
+				} else {
+					console.log('duplicate')
+				}
+			})
+	}
 
     render() {
         const { handleInputChange, handleFormSubmit } = this.props
@@ -67,7 +68,7 @@ class Auth extends React.Component {
                     <input type="text" placeholder="Username" required onChange = {handleInputChange} name = "username"/>
                     <input type="email" placeholder="Email" required onChange = {this.handleInputChange} name="email" value = {this.state.email}/>
                     <input type="password" placeholder="Password" required onChange = {this.handleInputChange} name= "password" value = {this.state.password} />
-                    <input type="password" placeholder="Re Password" required onChange = {this.handleInputChange} name= "confirmPass" value = {this.state.password}/>
+                    <input type="password" placeholder="Confirm Password" required onChange = {this.handleInputChange} name= "confirmPass" value = {this.state.confirmPassword}/>
                     <button type='submit'>Register</button>
                     <label htmlFor='form-switch'>Already Member ? Sign In Now..</label>
                 </form >
