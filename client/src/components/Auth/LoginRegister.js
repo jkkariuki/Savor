@@ -21,7 +21,7 @@ class Auth extends React.Component {
         console.log(event.target);
         const value = target.value
         const name = target.name;
-        console.log(this.state.username)
+        this.state.username
         this.setState({
           [name]: value
         });
@@ -35,9 +35,9 @@ class Auth extends React.Component {
                 email: this.state.email
               }
           ).then(this.setState({
-            //   username: "",
-            //   password: "",
-            //   email: "",
+              username: "",
+              password: "",
+              email: "",
             }))
             .catch(err => console.log("Save error:" + err));           
     }
@@ -62,18 +62,26 @@ class Auth extends React.Component {
         return (
             <div>
                  
+                <input type='checkbox' id='form-switch'/>
 
-                <form id='login-form' action="" method='post' onSubmit = {this.handleFormSubmit}>
+                <form id='login-form' action="" method='post' onSubmit = {this.handleLogIn}>
                     <h1 className="title">Savor</h1>
-                    <input type="text" placeholder="Username"   onChange = {this.handleInputChange}
+                    <input type="text" placeholder="Username"  required onChange = {this.handleInputChange}
                     name= "username" value = {this.state.username}/>
-                    <input type="password" placeholder="Password"  onChange = {this.handleInputChange}
+                    <input type="password" placeholder="Password" required onChange = {this.handleInputChange}
                     name = "password" value = {this.state.password}/>
-                    <input type="email" placeholder="Email"  onChange = {this.handleInputChange} name="email" value = {this.state.email}/>
-                    <button type='submit'>Register</button>
+                    <button type='submit'>Login</button>
+                    <label htmlFor='form-switch'><span>Register</span></label>
                 </form>
 
-                
+                <form id='register-form' action="/auth/signup" method='post' onSubmit = {this.handleFormSubmit}>
+                    <input type="text" placeholder="Username" required onChange = {this.handleInputChange} name = "username"/>
+                    <input type="email" placeholder="Email" required onChange = {this.handleInputChange} name="email" value = {this.state.email}/>
+                    <input type="password" placeholder="Password" required onChange = {this.handleInputChange} name= "password" value = {this.state.password} />
+                    <input type="password" placeholder="Re Password" required onChange = {this.handleInputChange} name= "confirmPass" value = {this.state.password}/>
+                    <button type='submit'>Register</button>
+                    <label htmlFor='form-switch'>Already Member ? Sign In Now..</label>
+                </form >
             </div>
         )
     }
