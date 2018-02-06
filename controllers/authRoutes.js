@@ -1,79 +1,89 @@
-const express = require('express');
-const router = require('express').Router();
-const db = require('../models');
-const passport = require('passport');
+const path = require("path");
+const router = require("express").Router();
+const db = require("../models");
+// const User = require("../models/user")
+
+const axios = require("axios");
+const passport = require('../Passport')
 
 // Request user info
+const userFunction = {
 
-router.get('/user', (req, res, next) => {
-    console.log('====User====')
-    console.log(req.user)
-    if (req.user) {
-        return res.json({
-            user: req.user
-        })
-    } else {
-        return res.json({
-            user: null
-        })
-    }
-});
-
-router.post('/login', function (req, res, next) {
+    getUser: function (req, res, next){
+        console.log('====User====')
+        console.log(req.user)
+        if (req.user) {
+            return res.json({
+                user: req.user
+            })
+        } else {
+            return res.json({
+                user: null
+            })
+        }
+    },
+    authenticate: function (req, res, next) {
         console.log(req.body)
         console.log('===================')
-        next()
-    },
-    passport.authenticate('local'), (req, res) => {
-        console.log('POST to /login')
-        const user = JSON.parse(JSON.stringify(req.user))
-        const cleanUser = Object.assign({}, user)
-        if (cleanUser.local) {
-            console.log('Deleting ${cleanUser.local.password}')
-            delete cleanUser.local.password
+        next()    
+        passport.authenticate('local'), (req, res) => {
+            console.log('POST to /login')
+            const user = JSON.parse(JSON.stringify(req.user))
+            const cleanUser = Object.assign({}, user)
+            if (cleanUser.local) {
+                console.log('Deleting ${cleanUser.local.password}')
+                delete cleanUser.local.password
+            }
+            res.json({
+                user: cleanUser
+            })
         }
-        res.json({
-            user: cleanUser
-        })
-    });
+    },
 
-router.post('/logout', (req, res) => {
-    if (req.user) {
-        req.session.destroy()
-        res.clearCookie('connect.sid')
-        return res.json ({ msg: 'logging you out '})
-    }else{
-        return res.json({ msg: 'no user to log out!' })
+    create: function(req, res){
+        console.log("create has been hit")
+        console.log(req.body)
+            // db.user
+            // .find(req.body.username)
+            // .then(dbModel => res.json (dbModel))
+            // .catch(err => {
+            //     res.status(422).json(err)
+            //     console.log("!*&!*!%!^&%!")
+            // })
+            // console.log(req.body)
+            // // ADD VALIDATION
+            // const { username, password, email } = req.body
+            // db.user.findOne({ 'username': username }, (err, userMatch) => {
+            //     if (userMatch) {
+            //         return res.json({
+            //             error: `Sorry, already a user with the username: ${username}`
+            //         })
+            //     }
+        const newUser = req.body
+        console.log(newUser)
+        db.User
+            .create(newUser) 
+                   // console.log(savedUser)
+                    // if (err) return res.json(err)
+                    // return res.json(savedUser)
+                
     }
-});
+            
+}
 
-router.post('/auth/signup', (req, res) => {
-	const { username, password } = req.body
-	// ADD VALIDATION
-	User.findOne({ 'local.username': username }, (err, userMatch) => {
-		if (userMatch) {
-			return res.json({
-				error: `Sorry, already a user with the username: ${username}`
-			})
-		}
-		const newUser = new User({
-			'local.username': username,
-			'local.password': password
-		})
-		newUser.save((err, savedUser) => {
-			if (err) return res.json(err)
-			return res.json(savedUser)
-		})
-	})
-})
+
 
 
 // Fetch current user from session
 // router.get('/api/currentuser', db.getCurrentUser);
+router.post("/api/signup", userFunction.create)
+router.post('/api/login', userFunction.authenticate) 
+router.get('/user', userFunction.getUser)
+
 
 router.use(function (req, res) {
-    console.log("something is off");
-    res.sendFile(path.join(__dirname, "../client/build/index.html"));
+    console.log("something is on");
+    res.sendFile(path.join(__dirname, "../client/public/index.html"));
 });
 
 

@@ -1,8 +1,8 @@
 {
   "name": "savor-client",
   "version": "0.1.0",
-  "private": true,
-  "proxy": "http://localhost:3001/",
+  "proxy": "http://localhost:3001/",  
+  "private": true,  
   "dependencies": {
     "axios": "^0.17.1",
     "react": "^16.2.0",

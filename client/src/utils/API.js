@@ -45,11 +45,12 @@ export default {
    },
 
    addNewUser: function(user){
-       return axios.post('/auth/signup', { user });
+       console.log(user)
+       return axios.post("/api/signup", { user });
    },
    
-   loginUser: function(username, password){
-       return axios.post('/auth/login', {username, password});
+   loginUser: function(user){
+       return axios.post('/api/login', {user});
    }
 
 

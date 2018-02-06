@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 //Controllers
-const { savorController, authRoutes } = require('./controllers');
+const {authRoutes, savorController  } = require('./controllers');
 
 // Authentication Packages
 const passport = require('passport');
@@ -37,8 +37,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Add routes, both API and view
-app.use(savorController);
-
+app.use(savorController, authRoutes);
 // Set up promises with mongoose
 mongoose.Promise = Promise;
 // Connect to the Mongo DB
@@ -50,7 +49,7 @@ mongoose.connect(dbURI)
   .catch((err) => console.log(err));
 
 app.use('/api', savorController);
-app.use('/auth', authRoutes);
+app.use('/api', authRoutes);
 app.get('*', function (request, response) {
   response.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
 });
