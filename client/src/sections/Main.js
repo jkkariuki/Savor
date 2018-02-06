@@ -2,14 +2,33 @@ import React from "react";
 import API from "../utils/API";
 import { GroceryList, GroceryItem } from "../components/GroceryList";
 import { Recipes, IndividualRecipes } from "../components/Recipes";
+// import Modal from "../components/Modal";
 
 class Main extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            //groceries holds all of the saved groceries and is updated by the save groceries function
             groceries: [],
+
+
+            //apiParams are the food search parameters you are plugging into the api, they are being sent from the getGroceries read function to the getRecipes function.
+            apiParams: [],
+
+            //recipex is the array that contains the api response data, which is then being mapped over in the jsx and sent to the view.
+            recipex: [],
+
+            //this is being updated when the user types in the food input and is passed to the database on submit
             foodItem: "",
-            purchased: false
+
+            //purchased is set as a default to false in the database, when the user clicks on the purchased button, it triggers an event, which passes the item's id to the purchaseGroceries function, which update purchased to true. The JSX will render differently depending on whether purchased is true or false and the api should not make a call unless purchase and use are true.
+            purchased: false,
+
+            //Use is also set as a default in the db to false. It toggled by the useGroceries function, which can only be can only be clicked if an item is purchased. If clicked by the user, the event will call the useGroceries function which updates/ toggle use in the database.
+            use: false,
+
+            
+
         };
     }
 
@@ -22,26 +41,47 @@ class Main extends React.Component {
     //this function retrieves groceries from the database, loops through them, pushes them to an array and then updates the states of groceries with that array.
 
     getGroceries = () => {
-        console.log("the getGrocery function has been hit");
         API.getGroceries()
             .then(res => {
-                console.log(res);
                 let savedItems = []
                 for (let i = 0; i < res.data.length; i++) {
                     savedItems.push(res.data[i])
                 }
                 this.setState({ groceries: savedItems })
                 console.log("groceries " + this.state.groceries);
-            }
-            )
+            })
+            .then(() => this.getRecipes(this.state.groceries))
 
     }
 
     deleteGroceries = (item) => {
         console.log("the main file delete route is being hit" + item);
         API.deleteGroceries(item)
-        .then (() => this.getGroceries())
-        .catch(err => console.log(err));
+            .then(() => this.getGroceries())
+            .catch(err => console.log(err));
+    }
+
+    purchaseGroceries = (id) => {
+        console.log("purchased item " + id);
+        API.updateGroceries(id, { purchased: true })
+            .then((res) => console.log(res))
+            .then(() => this.getGroceries())
+    }
+
+    useGroceries = (id) => {
+        console.log("used item " + id);
+
+        if (this.state.use === false) {
+            this.setState({ use: true })
+            API.useGroceries(id, { use: true })
+                .then((res) => console.log(res))
+                .then(() => this.getGroceries())
+        } else {
+            this.setState({ use: false })
+            API.useGroceries(id, { use: false })
+                .then((res) => console.log(res))
+                .then(() => this.getGroceries())
+        }
     }
 
 
@@ -60,7 +100,7 @@ class Main extends React.Component {
         });
     }
 
-    handleSubmit = (event) => {
+    saveGroceries = (event) => {
         event.preventDefault();
 
         API.saveGroceries({
@@ -68,26 +108,60 @@ class Main extends React.Component {
             purchased: false
         })
             .then(() => this.getGroceries())
-            .then(this.setState({foodItem: ""}))
+            .then(this.setState({ foodItem: "" }))
             .catch(err => console.log("Save error:" + err))
 
         // console.log("the handlesubmit button has been hit " + this.state.foodItem)
     }
 
 
-    // getRecipes = () {
-    //     API.getRecipes({
-    //         food: this.state.foodItem
-    //     }).then(function (data) {
-    //         console.log(data);
+    getRecipes = (groceries) => {
+        console.log(groceries);
+        let array = []
 
 
-    //     }).catch(function (err) {
-    //         console.log(err);
-    //     })
+        array = this.state.groceries.map(item => {
+            if (item.use === true && item.purchased === true) {
+                return item.food;
+            } else {
+                return [];
+            }
 
-    // }
+        })
+        this.getRecipes2(array);
 
+    }
+
+    getRecipes2 = (array) => {
+        const context = this;
+
+        this.setState({ apiParams: array })
+        console.log("api parms " + this.state.apiParams);
+        if (context.state.apiParams.length > 0) {
+            API.getRecipes({
+                food: this.state.apiParams
+            })
+                .then(function (data) {
+                    console.log("this is the api data " + data);
+                    let apiData = []
+                    for (let i = 0; i < data.data.length; i++) {
+                        apiData.push(data.data[i].recipe)
+                    }
+                    console.log(apiData);
+                    context.setState({ recipex: apiData })
+
+                })
+                .catch(function (err) {
+                    console.log(err);
+                })
+        } else {
+            context.setState({ recipex: [] })
+        }
+
+    }
+
+
+    
 
 
 
@@ -96,7 +170,7 @@ class Main extends React.Component {
             <div>
                 <div id="searchContainer" className="container">
                     <h1 className="title">Savor</h1>
-                    <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.saveGroceries}>
                         <label htmlFor="enterFoodItem">
                             Add Food to Grocery List
                             <br />
@@ -115,21 +189,64 @@ class Main extends React.Component {
                         <br />
                         <GroceryList>
                             {this.state.groceries.map(item => {
-                                return (
-                                    <GroceryItem>
-                                        <strong>
-                                            {"Item: " + item.food}
-                                            <br />
-                                            {/* {"purchased: " + item.purchased}
-                                        <br /> */}
-                                        </strong>
-                                        <button
-                                        onClick={() => this.deleteGroceries(item._id)}
-                                        >Delete
-                                    </button>
-                                    </GroceryItem>
-                                );
+                                if (item.purchased === true && item.use === false) {
+                                    return (
+                                        <GroceryItem>
+                                            <strong>
+                                                <strike> {"Item: " + item.food}</strike>
+                                                <br />
 
+                                            </strong>
+
+                                            <button
+                                                onClick={() => this.deleteGroceries(item._id)}
+                                            >Delete
+                                    </button>
+
+                                            <button
+                                                onClick={() => this.useGroceries(item._id)}
+                                            >Query Recipe
+                                    </button>
+                                        </GroceryItem>
+                                    );
+                                } else if (item.purchased === true && item.use === true) {
+                                    return (
+                                        <GroceryItem>
+                                            <strong>
+                                                <strike> {"Item: " + item.food}</strike>
+                                                <h4> ✓</h4>
+                                            </strong>
+
+                                            <button
+                                                onClick={() => this.deleteGroceries(item._id)}
+                                            >Delete
+                                    </button>
+                                            <button
+                                                onClick={() => this.useGroceries(item._id)}
+                                            >Remove from Recipe
+                                    </button>
+                                        </GroceryItem>
+                                    );
+                                }
+                                else {
+                                    return (
+                                        <GroceryItem>
+                                            <strong>
+                                                {"Item: " + item.food}
+                                                <br />
+
+                                            </strong>
+                                            <button
+                                                onClick={() => this.purchaseGroceries(item._id)}
+                                            >Purchased
+                                    </button>
+                                            <button
+                                                onClick={() => this.deleteGroceries(item._id)}
+                                            >Delete
+                                    </button>
+                                        </GroceryItem>
+                                    );
+                                }
                             })}
 
                         </GroceryList>
@@ -141,7 +258,30 @@ class Main extends React.Component {
                         <br/>
                         <br />
                         <Recipes>
+                            {this.state.recipex.map(recipe => {
+                                
+                                return (
+                                    <IndividualRecipes>
+                                        <strong>
+                                            {recipe.label}
+                                        </strong>
+                                        <br/>
+                                        <br/>
+                                        <div className="recipeImage center-block">
+                                        <img id= "image1" src ={recipe.image}/>
+                                        </div>
+                                        <br/>
+                                        <div>
+                                    {recipe.ingredientLines}
+                                     </div>   
 
+                                       
+                                    </IndividualRecipes>
+
+                                )
+                          
+                            })}
+                              
                         </Recipes>
                     </div>
 
