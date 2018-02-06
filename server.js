@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 //Controllers
-const {authRoutes, savorController  } = require('./controllers');
+const { authRoutes, savorController  } = require('./controllers');
 
 // Authentication Packages
 const passport = require('passport');
