@@ -9,6 +9,7 @@ const App = () => (
       <div>
         {/* <Navbar /> */}
         <Route exact path="/" component={Auth} />
+        <Route exact path= "/Main" component = {Main}/>
       </div>
     </Router>
   )

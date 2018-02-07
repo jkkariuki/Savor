@@ -25,9 +25,16 @@ const userFunction = {
     authenticate: function (req, res, next) {
         db.User.findOne({ 'username': req.body.user.username, 'password': req.body.user.password }, (err, userMatch) => {
             if (userMatch) {
-                console.log(`Welcome: ${req.body.user.username}`)                    
+                console.log(`Welcome: ${req.body.user.username}`);
+                const loggedInUser = req.body.user.username;
+                console.log(loggedInUser)
+                res.json(loggedInUser);
+
             }
-            console.log(`Invalid Username and/or password`)
+            else{
+                console.log(`Invalid Username and/or password`)
+            }
+            
 
         })
     },

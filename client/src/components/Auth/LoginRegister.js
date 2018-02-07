@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import API from "../../utils/API"
+import API from "../../utils/API";
+import { Redirect } from "react-router-dom"
 import "./LoginRegister.css"
 
 
@@ -11,7 +12,9 @@ class Auth extends React.Component {
         this.state = {
             username: "",
             password: "",
-            email: ""
+            email: "",
+            loggedInUser: "",
+            redirectTo: "",
         };
     }
 
@@ -46,19 +49,29 @@ class Auth extends React.Component {
         event.preventDefault();
         API.loginUser({              
               username: this.state.username,
-              password: this.state.password,
+              password: this.state.password
             }
-        ).then(this.setState({
-            username: "",
-            password: "",
-          }))
-          .catch(err => console.log("Save error:" + err));           
-  }
+        ).then(res => {
+            console.log(res)
+            console.log("user is " + res.data);
+            
+            this.setState({
+                username: "",
+                password: "",
+                loggedInUser: res.data ,
+                redirectTo: "/Main"         
+              })
+            }).catch(err => console.log("Save error:" + err));           
+    }
 
     
 
     render() {
-        
+        if (this.state.loggedInUser){
+            return <Redirect to = {{ pathname: this.state.redirectTo}}/>
+        }
+        else{
+
         return (
             <div>
                  
@@ -84,6 +97,7 @@ class Auth extends React.Component {
                 </form >
             </div>
         )
+    }
     }
 }
 export default Auth;
