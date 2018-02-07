@@ -2,7 +2,6 @@ import React from "react";
 import API from "../utils/API";
 import { GroceryList, GroceryItem } from "../components/GroceryList";
 import { Recipes, IndividualRecipes } from "../components/Recipes";
-// import Modal from "../components/Modal";
 
 class Main extends React.Component {
     constructor(props) {
@@ -10,7 +9,6 @@ class Main extends React.Component {
         this.state = {
             //groceries holds all of the saved groceries and is updated by the save groceries function
             groceries: [],
-
 
             //apiParams are the food search parameters you are plugging into the api, they are being sent from the getGroceries read function to the getRecipes function.
             apiParams: [],
@@ -27,7 +25,7 @@ class Main extends React.Component {
             //Use is also set as a default in the db to false. It toggled by the useGroceries function, which can only be can only be clicked if an item is purchased. If clicked by the user, the event will call the useGroceries function which updates/ toggle use in the database.
             use: false,
 
-            
+            zeroRecipes: false
 
         };
     }
@@ -138,17 +136,26 @@ class Main extends React.Component {
         this.setState({ apiParams: array })
         console.log("api parms " + this.state.apiParams);
         if (context.state.apiParams.length > 0) {
+            this.setState({ zeroRecipes: false })
             API.getRecipes({
                 food: this.state.apiParams
             })
                 .then(function (data) {
-                    console.log("this is the api data " + data);
-                    let apiData = []
-                    for (let i = 0; i < data.data.length; i++) {
-                        apiData.push(data.data[i].recipe)
+
+                    if (data.data.length > 0) {
+                        console.log("this is the api data " + data);
+                        let apiData = []
+                        for (let i = 0; i < data.data.length; i++) {
+                            apiData.push(data.data[i].recipe)
+                        }
+                        console.log(apiData);
+                        context.setState({ recipex: apiData })
                     }
-                    console.log(apiData);
-                    context.setState({ recipex: apiData })
+                    else {
+                        console.log("No data");
+                        context.noRecipes();
+                    }
+
 
                 })
                 .catch(function (err) {
@@ -160,8 +167,13 @@ class Main extends React.Component {
 
     }
 
+    noRecipes = () => {
 
-    
+
+        this.setState({ zeroRecipes: true })
+
+        console.log(this.state.zeroRecipes);
+    }
 
 
 
@@ -257,38 +269,47 @@ class Main extends React.Component {
                         <h4 className="sectionTitle">Recipes</h4>
                         <br />
                         <Recipes>
-                            {this.state.recipex.map(recipe => {
-                                
-                                return (
-                                    <IndividualRecipes>
-                                        <strong>
-                                            {recipe.label}
-                                        </strong>
-                                        <br/>
-                                        <br/>
-                                        <div className="recipeImage center-block">
-                                        <img id= "image1" src ={recipe.image}/>
-                                        </div>
-                                        <br/>
-                                        <div>
-                                    {recipe.ingredientLines}
-                                     </div>   
+                            {this.state.zeroRecipes === true ?
+                                <IndividualRecipes >
+                                    <div>
+                                        <h4>No recipes match your query</h4>
+                                    </div>
+                                </IndividualRecipes>
+                                :
+                                this.state.recipex.map(recipe => {
+                                    
+                                        return (
+                                            <IndividualRecipes>
+                                                <strong>
+                                                    {recipe.label}
+                                                </strong>
+                                                <br />
+                                                <br />
+                                                <div className="recipeImage center-block">
+                                                    <img id="image1" src={recipe.image} />
+                                                </div>
+                                                <br />
+                                                <div>
+                                                    {recipe.ingredientLines}
+                                                </div>
 
-                                       
-                                    </IndividualRecipes>
 
-                                )
-                          
-                            })}
-                              
+                                            </IndividualRecipes>
+
+                                        )
+                                    
+                                })
+
+                                    }
+
                         </Recipes>
                     </div>
+                            
+                    </div>
+
 
                 </div>
-
-
-            </div>
-        )
+                )
     }
 }
 
