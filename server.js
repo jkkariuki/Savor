@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require('path');
+const router = require('express-router');
 const cookieParser = require('cookie-parser');
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -12,6 +13,7 @@ const { authRoutes, savorController  } = require('./controllers');
 
 // Authentication Packages
 const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
 // Configure body parser for axios requests
 app.use(bodyParser.json());
@@ -26,7 +28,8 @@ if (process.env.NODE_ENV === 'production'){
 app.use(cookieParser());
 
 // Initialize express session
-app.use(require('express-session')({
+app.use(require('express-session')
+({
   secret: 'lskjklfsj',
   resave: false,
   saveUninitialized: false
@@ -38,11 +41,13 @@ app.use(passport.session());
 
 // Add routes, both API and view
 app.use(savorController, authRoutes);
+
 // Set up promises with mongoose
 mongoose.Promise = Promise;
-// Connect to the Mongo DB
 
 const dbURI = process.env.MONGOD_URI || 'mongodb://localhost/savordb';
+
+// Connect to the mongoDB database
 
 mongoose.connect(dbURI)
   .then(() => console.log('connected to DB!'))

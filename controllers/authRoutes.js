@@ -2,26 +2,14 @@ const path = require("path");
 const router = require("express").Router();
 const db = require("../models");
 //const User = require("../models/user")
-
 const axios = require("axios");
-const passport = require('../Passport')
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+
 
 // Request user info
 const userFunction = {
 
-    // getUser: function (req, res, next){
-    //     console.log('====User====')
-    //     console.log(req.user)
-    //     if (req.user) {
-    //         return res.json({
-    //             user: req.user
-    //         })
-    //     } else {
-    //         return res.json({
-    //             user: null
-    //         })
-    //     }
-    // },
     authenticate: function (req, res, next) {
         db.User.findOne({
             'username': req.body.user.username,
@@ -34,34 +22,11 @@ const userFunction = {
             }
         })
     },
-    // console.log(req.body)
-    // console.log('===================')
-    // next();    
-    // passport.authenticate('local'), (req, res) => {
-    //     console.log('POST to /login')
-    //     const user = JSON.parse(JSON.stringify(req.body.user))
-    //     const cleanUser = Object.assign({}, user)
-    //     if (cleanUser.local) {
-    //         console.log('Deleting ${cleanUser.local.password}')
-    //         delete cleanUser.local.password
-    //     }
-    //     res.json({
-    //         user: cleanUser
-    //     })
-    // }
 
 
     create: function (req, res) {
         console.log("create has been hit")
         console.log(req.body)
-        // db.user
-        // .find(req.body.user.username)
-        // .then(dbModel => res.json (dbModel))
-        // .catch(err => {
-        //     res.status(422).json(err)
-        //     console.log("!*&!*!%!^&%!")
-        // })
-        // ADD VALIDATION
         const {
             username,
             password,
@@ -77,10 +42,6 @@ const userFunction = {
             console.log(newUser)
             db.User
                 .create(newUser)
-            // .catch(err) 
-            //    console.log(savedUser)
-            //     if (err) return res.json(err)
-            //     return res.json(savedUser)
 
         })
     }
@@ -88,15 +49,12 @@ const userFunction = {
 }
 
 
-
-
-
 // Fetch current user from session
 // router.get('/api/currentuser', db.getCurrentUser);
 router.post("/api/signup", userFunction.create)
 router.post('/api/login', userFunction.authenticate)
-// router.get('/user', userFunction.getUser)
 
+// router.get('/user', userFunction.getUser)
 
 router.use(function (req, res) {
     console.log("something is on");
