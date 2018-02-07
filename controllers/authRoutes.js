@@ -16,10 +16,17 @@ const userFunction = {
             'password': req.body.user.password
         }, (err, userMatch) => {
             if (userMatch) {
-                console.log(`Welcome: ${req.body.user.username}`)
-            }else{
+                console.log(`Welcome: ${req.body.user.username}`);
+                const loggedInUser = req.body.user.username;
+                console.log(loggedInUser)
+                res.json(loggedInUser);
+
+            }
+            else{
                 console.log(`Invalid Username and/or password`)
             }
+            
+
         })
     },
 

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import API from "../../utils/API"
+import API from "../../utils/API";
+import { Redirect } from "react-router-dom"
 import "./LoginRegister.css"
 // import { Redirect } from 'react-router-dom'
 // import axios from 'axios';
@@ -15,8 +16,8 @@ class Auth extends React.Component {
             username: "",
             password: "",
             email: "",
-            redirectTo: '',
-
+            loggedInUser: "",
+            redirectTo: "",
         };
     }
 
@@ -49,7 +50,7 @@ class Auth extends React.Component {
         event.preventDefault();
         API.loginUser({              
               username: this.state.username,
-              password: this.state.password,
+              password: this.state.password
             }
         ).then(this.setState({
             username: "",
@@ -67,6 +68,11 @@ class Auth extends React.Component {
             return <Redirect to ={{pathname: this.state.redirectTo }} />
         }else{
         
+        if (this.state.loggedInUser){
+            return <Redirect to = {{ pathname: this.state.redirectTo}}/>
+        }
+        else{
+
         return (
             <div>
                  
@@ -92,6 +98,7 @@ class Auth extends React.Component {
                 </form >
             </div>
         )
+    }
     }
 }
 }

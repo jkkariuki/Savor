@@ -50,6 +50,7 @@ export default {
    },
    
    loginUser: function(user){
+       console.log(user)
        return axios.post('/api/login', {user});
    }
 
