@@ -25,7 +25,11 @@ class Main extends React.Component {
             //Use is also set as a default in the db to false. It toggled by the useGroceries function, which can only be can only be clicked if an item is purchased. If clicked by the user, the event will call the useGroceries function which updates/ toggle use in the database.
             use: false,
 
-            zeroRecipes: false
+            //This boolean is used to display no recipe response
+            zeroRecipes: false,
+
+            //when this is set to true, the loading spinner will be activated.
+            loading: false
 
         };
     }
@@ -137,11 +141,12 @@ class Main extends React.Component {
         console.log("api parms " + this.state.apiParams);
         if (context.state.apiParams.length > 0) {
             this.setState({ zeroRecipes: false })
+            context.setState({loading:true})
             API.getRecipes({
                 food: this.state.apiParams
             })
                 .then(function (data) {
-
+                context.setState({loading: false})
                     if (data.data.length > 0) {
                         console.log("this is the api data " + data);
                         let apiData = []
@@ -269,15 +274,24 @@ class Main extends React.Component {
                         <h4 className="sectionTitle">Recipes</h4>
                         <br />
                         <Recipes>
-                            {this.state.zeroRecipes === true ?
+
+                            {this.state.loading === true?
                                 <IndividualRecipes >
                                     <div>
-                                        <h4>No recipes match your query</h4>
+                                        <h4>loading</h4>
                                     </div>
                                 </IndividualRecipes>
                                 :
-                                this.state.recipex.map(recipe => {
-                                    
+
+                                this.state.zeroRecipes === true ?
+                                    <IndividualRecipes >
+                                        <div>
+                                            <h4>No recipes match your query</h4>
+                                        </div>
+                                    </IndividualRecipes>
+                                    :
+
+                                    this.state.recipex.map(recipe => {
                                         return (
                                             <IndividualRecipes>
                                                 <strong>
@@ -297,19 +311,20 @@ class Main extends React.Component {
                                             </IndividualRecipes>
 
                                         )
-                                    
-                                })
 
-                                    }
+                                    })
+
+                            })
+
 
                         </Recipes>
                     </div>
-                            
-                    </div>
-
 
                 </div>
-                )
+
+
+            </div>
+        )
     }
 }
 
