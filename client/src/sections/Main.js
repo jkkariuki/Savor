@@ -149,6 +149,7 @@ class Main extends React.Component {
                 .then(function (data) {
                     context.setState({ loading: false })
                     if (data.data.length > 0) {
+                        
                         console.log("this is the api data " + data);
                         let apiData = []
                         for (let i = 0; i < data.data.length; i++) {
@@ -156,9 +157,11 @@ class Main extends React.Component {
                         }
                         console.log(apiData);
                         context.setState({ recipex: apiData })
+                        
                     }
-                    else {
+                    else if(context.state.use===true) {
                         console.log("No data");
+
                         context.noRecipes();
                     }
 
@@ -174,11 +177,15 @@ class Main extends React.Component {
     }
 
     noRecipes = () => {
-
-
+        // if(this.state.recipex.length===0 && this.state.use===true ){
+        //  this.setState({ zeroRecipes: true })
+        // }else{
+        //     this.setState({recipex: []})
+        //     this.setState({ zeroRecipes: false })
+        // }
         this.setState({ zeroRecipes: true })
-
-        console.log(this.state.zeroRecipes);
+         console.log("burrrrp: " + this.state.zeroRecipes);
+         this.getRecipes2()
     }
 
 
