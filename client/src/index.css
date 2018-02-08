@@ -1,16 +1,38 @@
+h1{
+ font-size: 75px;
+}
+h4{
+ font-size: 17px;   
+ margin-bottom:0px;
+}
 #searchContainer{
     background-color:rgb(113, 216, 113);
-    color:white;
+    color:rgb(255, 225, 0);
     text-align:center;
     border-radius: 10px;
     margin-bottom:2%;
+    font-family: 'Open Sans', sans-serif;
+    border:solid rgb(255, 225, 0) 3px;
+}
+
+.title{
+    font-family: 'Pacifico', cursive;
+}
+
+.subtitle{
+    font-family: 'Pacifico', cursive;
+
+}
+
+.logoImage {
+    height: 75px;
+    width:90px;
 }
 
 #responseContainer{
     background-color:white;
     color:white;
     text-align:center;
-    background-color:rgb(113, 216, 113);
     border-radius: 10px;
 }
 
@@ -24,13 +46,13 @@
 
 .grocerySection {text-align:center;
             
-                border:rgb(113, 216, 113) 2px solid;
+                
                background-color:white;
                
 }
 
 .recipeSection{text-align:center;
-                border:rgb(113, 216, 113) 2px solid;
+                
                 background-color:white;
                 
 }
@@ -45,3 +67,20 @@
          height:75px;
         border-radius: 10px;
 }
+
+
+
+#loadSpinner {
+    height: 55px;
+    width:55px;
+    animation-name:load;
+    animation-duration:5s;
+    animation-iteration-count:infinite;
+    animation-fill-mode: forwards;
+}
+
+@keyframes load{
+    from{ transform:rotate(0deg) }
+    to{ transform: rotate(720deg)}
+}
+

@@ -3,6 +3,7 @@ import API from "../utils/API";
 import { GroceryList, GroceryItem } from "../components/GroceryList";
 import { Recipes, IndividualRecipes } from "../components/Recipes";
 
+
 class Main extends React.Component {
     constructor(props) {
         super(props);
@@ -141,12 +142,12 @@ class Main extends React.Component {
         console.log("api parms " + this.state.apiParams);
         if (context.state.apiParams.length > 0) {
             this.setState({ zeroRecipes: false })
-            context.setState({loading:true})
+            context.setState({ loading: true })
             API.getRecipes({
                 food: this.state.apiParams
             })
                 .then(function (data) {
-                context.setState({loading: false})
+                    context.setState({ loading: false })
                     if (data.data.length > 0) {
                         console.log("this is the api data " + data);
                         let apiData = []
@@ -186,145 +187,148 @@ class Main extends React.Component {
         return (
             <div>
                 <div id="searchContainer" className="container">
-                    <h1 className="title">Savor</h1>
-                    <form onSubmit={this.saveGroceries}>
-                        <label htmlFor="enterFoodItem">
-                            Add Food to Grocery List
+                    <div className="row" >
+                        <h1  className="title">Savor</h1>
+                        <img className="logoImage" src={require("../images/logo.png")} />
+                    </div>
+                        <form onSubmit={this.saveGroceries}>
+                            <label htmlFor="enterFoodItem">
+                                <h4>Add Food to Grocery List</h4>
                             <br />
-                            <input className="inputField" name="foodItem" type="text" value={this.state.foodItem} onChange={this.handleChange} />
-                            <br />
-                            <br />
-                            <input className="button" type="submit" value="Submit" />
-                        </label>
-                    </form>
-                </div>
-
-                <div id="responseContainer" className="container">
-
-                    <div className="grocerySection  col-lg-6 col-md-6 col-sm-6">
-                        <h4 className="sectionTitle">Grocery List</h4>
-                        <br />
-                        <GroceryList>
-                            {this.state.groceries.map(item => {
-                                if (item.purchased === true && item.use === false) {
-                                    return (
-                                        <GroceryItem>
-                                            <strong>
-                                                <strike> {"Item: " + item.food}</strike>
-                                                <br />
-
-                                            </strong>
-
-                                            <button
-                                                onClick={() => this.deleteGroceries(item._id)}
-                                            >Delete
-                                    </button>
-
-                                            <button
-                                                onClick={() => this.useGroceries(item._id)}
-                                            >Query Recipe
-                                    </button>
-                                        </GroceryItem>
-                                    );
-                                } else if (item.purchased === true && item.use === true) {
-                                    return (
-                                        <GroceryItem>
-                                            <strong>
-                                                <strike> {"Item: " + item.food}</strike>
-                                                <h4> ✓</h4>
-                                            </strong>
-
-                                            <button
-                                                onClick={() => this.deleteGroceries(item._id)}
-                                            >Delete
-                                    </button>
-                                            <button
-                                                onClick={() => this.useGroceries(item._id)}
-                                            >Remove from Recipe
-                                    </button>
-                                        </GroceryItem>
-                                    );
-                                }
-                                else {
-                                    return (
-                                        <GroceryItem>
-                                            <strong>
-                                                {"Item: " + item.food}
-                                                <br />
-
-                                            </strong>
-                                            <button
-                                                onClick={() => this.purchaseGroceries(item._id)}
-                                            >Purchased
-                                    </button>
-                                            <button
-                                                onClick={() => this.deleteGroceries(item._id)}
-                                            >Delete
-                                    </button>
-                                        </GroceryItem>
-                                    );
-                                }
-                            })}
-
-                        </GroceryList>
+                                <input className="inputField" name="foodItem" type="text" value={this.state.foodItem} onChange={this.handleChange} />
+                                <br />
+                                <br />
+                                <input className="button" type="submit" value="Submit" />
+                            </label>
+                        </form>
                     </div>
 
+                    <div id="responseContainer" className="container">
 
-                    <div className="recipeSection col-lg-6 col-md-6 col-sm-6">
-                        <h4 className="sectionTitle">Recipes</h4>
-                        <br />
-                        <Recipes>
+                        <div className="grocerySection  col-lg-6 col-md-6 col-sm-6">
+                            <h4 className="sectionTitle subtitle">Grocery List</h4>
+                            <br />
+                            <GroceryList>
+                                {this.state.groceries.map(item => {
+                                    if (item.purchased === true && item.use === false) {
+                                        return (
+                                            <GroceryItem>
+                                                <strong>
+                                                    <strike> {"Item: " + item.food}</strike>
+                                                    <br />
 
-                            {this.state.loading === true?
-                                <IndividualRecipes >
-                                    <div>
-                                        <h4>loading</h4>
-                                    </div>
-                                </IndividualRecipes>
-                                :
+                                                </strong>
 
-                                this.state.zeroRecipes === true ?
+                                                <button
+                                                    onClick={() => this.deleteGroceries(item._id)}
+                                                >Delete
+                                    </button>
+
+                                                <button
+                                                    onClick={() => this.useGroceries(item._id)}
+                                                >Query Recipe
+                                    </button>
+                                            </GroceryItem>
+                                        );
+                                    } else if (item.purchased === true && item.use === true) {
+                                        return (
+                                            <GroceryItem>
+                                                <strong>
+                                                    <strike> {"Item: " + item.food}</strike>
+                                                    <h4> ✓</h4>
+                                                </strong>
+
+                                                <button
+                                                    onClick={() => this.deleteGroceries(item._id)}
+                                                >Delete
+                                    </button>
+                                                <button
+                                                    onClick={() => this.useGroceries(item._id)}
+                                                >Remove from Recipe
+                                    </button>
+                                            </GroceryItem>
+                                        );
+                                    }
+                                    else {
+                                        return (
+                                            <GroceryItem>
+                                                <strong>
+                                                    {"Item: " + item.food}
+                                                    <br />
+
+                                                </strong>
+                                                <button
+                                                    onClick={() => this.purchaseGroceries(item._id)}
+                                                >Purchased
+                                    </button>
+                                                <button
+                                                    onClick={() => this.deleteGroceries(item._id)}
+                                                >Delete
+                                    </button>
+                                            </GroceryItem>
+                                        );
+                                    }
+                                })}
+
+                            </GroceryList>
+                        </div>
+
+
+                        <div className="recipeSection col-lg-6 col-md-6 col-sm-6">
+                            <h4 className="sectionTitle title">Recipes</h4>
+                            <br />
+                            <Recipes>
+
+                                {this.state.loading === true ?
                                     <IndividualRecipes >
                                         <div>
-                                            <h4>No recipes match your query</h4>
+                                        <img alt="" id="loadSpinner" src={require("../images/logo.png")} />
                                         </div>
                                     </IndividualRecipes>
                                     :
 
-                                    this.state.recipex.map(recipe => {
-                                        return (
-                                            <IndividualRecipes>
-                                                <strong>
-                                                    {recipe.label}
-                                                </strong>
-                                                <br />
-                                                <br />
-                                                <div className="recipeImage center-block">
-                                                    <img id="image1" src={recipe.image} />
-                                                </div>
-                                                <br />
-                                                <div>
-                                                    {recipe.ingredientLines}
-                                                </div>
+                                    this.state.zeroRecipes === true ?
+                                        <IndividualRecipes >
+                                            <div>
+                                                <h4>No recipes match your query</h4>
+                                            </div>
+                                        </IndividualRecipes>
+                                        :
+
+                                        this.state.recipex.map(recipe => {
+                                            return (
+                                                <IndividualRecipes>
+                                                    <strong>
+                                                        {recipe.label}
+                                                    </strong>
+                                                    <br />
+                                                    <br />
+                                                    <div className="recipeImage center-block">
+                                                        <img id="image1" src={recipe.image} />
+                                                    </div>
+                                                    <br />
+                                                    <div>
+                                                        {recipe.ingredientLines}
+                                                    </div>
 
 
-                                            </IndividualRecipes>
+                                                </IndividualRecipes>
 
-                                        )
+                                            )
 
-                                    })
+                                        })
 
-                            })
+                                })
 
 
                         </Recipes>
+                        </div>
+
                     </div>
 
+
                 </div>
-
-
-            </div>
-        )
+                )
     }
 }
 
