@@ -3,7 +3,7 @@ const router = require("express").Router();
 const db = require("../models");
 //const User = require("../models/user")
 const axios = require("axios");
-const passport = require('passport');
+const passport = require('../passport');
 const LocalStrategy = require('passport-local').Strategy;
 
 
@@ -20,6 +20,7 @@ const userFunction = {
                 const loggedInUser = req.body.user.username;
                 console.log(loggedInUser)
                 res.json(loggedInUser);
+                passport.authenticate('local-strategy',)
 
             }
             else{
@@ -52,14 +53,23 @@ const userFunction = {
 
         })
     }
-
 }
 
 
 // Fetch current user from session
 // router.get('/api/currentuser', db.getCurrentUser);
 router.post("/api/signup", userFunction.create)
-router.post('/api/login', userFunction.authenticate)
+
+router.post('/api/login', function(req, res, next) {
+        console.log(req.body.user.username)
+    passport.authenticate(req.body.user.username, req.body.user.password),
+    (request, result) => {
+        console.log("loggeed in" + request)
+
+    }
+}
+
+)
 
 // router.get('/user', userFunction.getUser)
 
@@ -71,3 +81,21 @@ router.use(function (req, res) {
 
 
 module.exports = router;
+
+// router.post(
+//     '/login',
+//     function (req, res, next) {
+//         console.log('routes/user.js, login, req.body: ');
+        
+//         console.log(req.body)
+//         next()
+//     },
+//     passport.authenticate('local'),
+//     (req, res) => {
+//         console.log('logged in', req.user);
+//         var userInfo = {
+//             username: req.user.username
+//         };
+//         res.send(userInfo);
+//     }
+// )
