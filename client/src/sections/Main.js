@@ -1,9 +1,12 @@
 import React from "react";
+import LoginRegister from "../components/Auth/LoginRegister"
 import API from "../utils/API";
+import Auth from "../components/Auth/LoginRegister"
 import { GroceryList, GroceryItem } from "../components/GroceryList";
 import { Recipes, IndividualRecipes } from "../components/Recipes";
-
+ 
 class Main extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -24,10 +27,13 @@ class Main extends React.Component {
             purchased: false,
 
             //Use is also set as a default in the db to false. It toggled by the useGroceries function, which can only be can only be clicked if an item is purchased. If clicked by the user, the event will call the useGroceries function which updates/ toggle use in the database.
-            use: false
+            use: false,
+
+            currentUser: null
 
         };
     }
+    
 
 
     //when the page loads the getGroceries function is called
@@ -157,12 +163,23 @@ class Main extends React.Component {
 
     }
 
+    setCurrentUser =() =>{
+        this.setState({
+            currentUser: this.props.getCurrentUser
+        })
+       
+    }
 
+    
+
+    
 
 
     render() {
+        console.log(this.props.getCurrentUser)
         return (
             <div>
+                <h3>Welcome {this.props.getCurrentUser}</h3>
                 <div id="searchContainer" className="container">
                     <h1 className="title">Savor</h1>
                     <form onSubmit={this.saveGroceries}>

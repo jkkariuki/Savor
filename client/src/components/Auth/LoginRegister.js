@@ -41,11 +41,15 @@ class Auth extends React.Component {
               username: "",
               password: "",
               email: "",
+              redirectTo: "/"
+              
             }))
             .catch(err => console.log("Save error:" + err));           
     }
 
     handleLogIn = (event) => {
+        const self = this
+        console.log("hello")
         event.preventDefault();
         API.loginUser({              
               username: this.state.username,
@@ -54,21 +58,33 @@ class Auth extends React.Component {
         ).then(res => {
             console.log(res)
             console.log("user is " + res.data);
-            
             this.setState({
                 username: "",
                 password: "",
                 loggedInUser: res.data ,
                 redirectTo: "/Main"         
               })
-            }).catch(err => console.log("Save error:" + err));           
+             self.someFn()
+            }).catch(err => console.log("Save error:" + err)); 
+            
     }
+
+    someFn = () =>{
+        
+        const currentUser = this.state.loggedInUser;
+        console.log("currentUser HERE:" + currentUser)
+        this.props.updateLoggedInUser(currentUser)
+    }     
 
     
 
+    
+
+
     render() {
         if (this.state.loggedInUser){
-            return <Redirect to = {{ pathname: this.state.redirectTo}}/>
+           
+            return <Redirect to = {{ pathname: this.state.redirectTo}}/>;
         }
         else{
 
@@ -103,5 +119,7 @@ class Auth extends React.Component {
 export default Auth;
 Auth.props = {
     handleInputChange: PropTypes.func,
-    handleFormSubmit: PropTypes.func
+    handleFormSubmit: PropTypes.func,
+    someFn: PropTypes.func
+
   }

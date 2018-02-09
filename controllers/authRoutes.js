@@ -5,7 +5,6 @@ const db = require("../models");
 
 const axios = require("axios");
 const passport = require('../Passport')
-
 // Request user info
 const userFunction = {
 
@@ -23,12 +22,13 @@ const userFunction = {
     //     }
     // },
     authenticate: function (req, res, next) {
-        db.User.findOne({ 'username': req.body.user.username, 'password': req.body.user.password }, (err, userMatch) => {
+        db.User.findOne({'username': req.body.user.username, 'password': req.body.user.password }, (err, userMatch) => {
             if (userMatch) {
                 console.log(`Welcome: ${req.body.user.username}`);
                 const loggedInUser = req.body.user.username;
                 console.log(loggedInUser)
                 res.json(loggedInUser);
+                return loggedInUser
 
             }
             else{
@@ -100,7 +100,5 @@ router.use(function (req, res) {
     console.log("something is on");
     res.sendFile(path.join(__dirname, "../client/public/index.html"));
 });
-
-
 
 module.exports = router;
