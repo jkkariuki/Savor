@@ -5,7 +5,7 @@ class GroceryList extends React.Component {
 
     render(){
         return(
-            <div className="list-overflow-container">
+            <div className="list-overflow-container subContainer">
                 <ul className="list-group">
                     {this.props.children}
                 </ul>

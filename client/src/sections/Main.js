@@ -2,7 +2,7 @@ import React from "react";
 import API from "../utils/API";
 import { GroceryList, GroceryItem } from "../components/GroceryList";
 import { Recipes, IndividualRecipes } from "../components/Recipes";
-// import Modal from "../components/Modal";
+
 
 class Main extends React.Component {
     constructor(props) {
@@ -10,7 +10,6 @@ class Main extends React.Component {
         this.state = {
             //groceries holds all of the saved groceries and is updated by the save groceries function
             groceries: [],
-
 
             //apiParams are the food search parameters you are plugging into the api, they are being sent from the getGroceries read function to the getRecipes function.
             apiParams: [],
@@ -27,7 +26,11 @@ class Main extends React.Component {
             //Use is also set as a default in the db to false. It toggled by the useGroceries function, which can only be can only be clicked if an item is purchased. If clicked by the user, the event will call the useGroceries function which updates/ toggle use in the database.
             use: false,
 
-            
+            //This boolean is used to display no recipe response
+            zeroRecipes: false,
+
+            //when this is set to true, the loading spinner will be activated.
+            loading: false
 
         };
     }
@@ -138,17 +141,33 @@ class Main extends React.Component {
         this.setState({ apiParams: array })
         console.log("api parms " + this.state.apiParams);
         if (context.state.apiParams.length > 0) {
+            this.setState({ zeroRecipes: false })
+            context.setState({ loading: true })
             API.getRecipes({
                 food: this.state.apiParams
             })
                 .then(function (data) {
-                    console.log("this is the api data " + data);
-                    let apiData = []
-                    for (let i = 0; i < data.data.length; i++) {
-                        apiData.push(data.data[i].recipe)
+                    context.setState({ loading: false })
+                    if (data.data.length > 0 ) {
+                        
+                        console.log("this is the api data " + data);
+                        let apiData = []
+                        for (let i = 0; i < data.data.length; i++) {
+                            apiData.push(data.data[i].recipe)
+                        }
+                        console.log(apiData);
+                        context.setState({ recipex: apiData })
+                        
                     }
-                    console.log(apiData);
-                    context.setState({ recipex: apiData })
+                    else if(context.state.use===false){
+                        context.setState({ recipex: [] })
+                    }
+                    else if(context.state.use===true) {
+                        console.log("No data");
+
+                        context.noRecipes();
+                    }
+
 
                 })
                 .catch(function (err) {
@@ -160,8 +179,12 @@ class Main extends React.Component {
 
     }
 
-
-    
+    noRecipes = () => {
+        this.setState({ zeroRecipes: true })
+         console.log("burrrrp: " + this.state.zeroRecipes);
+         console.log("use: " + this.state.use);
+        // this.getRecipes()
+    }
 
 
 
@@ -169,10 +192,13 @@ class Main extends React.Component {
         return (
             <div>
                 <div id="searchContainer" className="container">
-                    <h1 className="title">Savor</h1>
+                    <div className="row" >
+                        <h1 className="title">Savor</h1>
+                        <img className="logoImage" src={require("../images/logo.png")} />
+                    </div>
                     <form onSubmit={this.saveGroceries}>
                         <label htmlFor="enterFoodItem">
-                            Add Food to Grocery List
+                            <h4>Add Food to Grocery List</h4>
                             <br />
                             <input className="inputField" name="foodItem" type="text" value={this.state.foodItem} onChange={this.handleChange} />
                             <br />
@@ -185,7 +211,7 @@ class Main extends React.Component {
                 <div id="responseContainer" className="container">
 
                     <div className="grocerySection  col-lg-6 col-md-6 col-sm-6">
-                        <h4 className="sectionTitle">Grocery List</h4>
+                        <h4 className="sectionTitle subtitle">Grocery List</h4>
                         <br />
                         <GroceryList>
                             {this.state.groceries.map(item => {
@@ -198,12 +224,12 @@ class Main extends React.Component {
 
                                             </strong>
 
-                                            <button
+                                            <button className="button"
                                                 onClick={() => this.deleteGroceries(item._id)}
                                             >Delete
                                     </button>
 
-                                            <button
+                                            <button className="button"
                                                 onClick={() => this.useGroceries(item._id)}
                                             >Query Recipe
                                     </button>
@@ -215,13 +241,14 @@ class Main extends React.Component {
                                             <strong>
                                                 <strike> {"Item: " + item.food}</strike>
                                                 <h4> ✓</h4>
+                                                <br/>
                                             </strong>
 
-                                            <button
+                                            <button className="button"
                                                 onClick={() => this.deleteGroceries(item._id)}
                                             >Delete
                                     </button>
-                                            <button
+                                            <button className="button"
                                                 onClick={() => this.useGroceries(item._id)}
                                             >Remove from Recipe
                                     </button>
@@ -236,11 +263,11 @@ class Main extends React.Component {
                                                 <br />
 
                                             </strong>
-                                            <button
+                                            <button className="button"
                                                 onClick={() => this.purchaseGroceries(item._id)}
                                             >Purchased
                                     </button>
-                                            <button
+                                            <button className="button"
                                                 onClick={() => this.deleteGroceries(item._id)}
                                             >Delete
                                     </button>
@@ -254,34 +281,54 @@ class Main extends React.Component {
 
 
                     <div className="recipeSection col-lg-6 col-md-6 col-sm-6">
-                        <h4 className="sectionTitle">Recipes</h4>
-                        <br/>
+  
+
+                        <h4 className="sectionTitle title">Recipes</h4>
                         <br />
                         <Recipes>
-                            {this.state.recipex.map(recipe => {
-                                
-                                return (
-                                    <IndividualRecipes>
-                                        <strong>
-                                            {recipe.label}
-                                        </strong>
-                                        <br/>
-                                        <br/>
-                                        <div className="recipeImage center-block">
-                                        <img id= "image1" src ={recipe.image}/>
-                                        </div>
-                                        <br/>
+
+                            {this.state.loading === true ?
+                                <IndividualRecipes >
+                                    <div>
+                                        <img alt="" id="loadSpinner" src={require("../images/logo.png")} />
+                                    </div>
+                                </IndividualRecipes>
+                                :
+
+                                this.state.zeroRecipes === true ?
+                                    <IndividualRecipes >
                                         <div>
-                                    {recipe.ingredientLines}
-                                     </div>   
-
-                                       
+                                            <h4>No recipes match your query</h4>
+                                        </div>
                                     </IndividualRecipes>
+                                    :
 
-                                )
-                          
-                            })}
-                              
+                                    this.state.recipex.map(recipe => {
+                                        return (
+                                            <IndividualRecipes>
+                                                <strong>
+                                                    {recipe.label}
+                                                </strong>
+                                                <br />
+                                                <br />
+                                                <div className="recipeImage center-block">
+                                                    <img id="image1" src={recipe.image} />
+                                                </div>
+                                                <br />
+                                                <div>
+                                                    {recipe.ingredientLines}
+                                                </div>
+
+
+                                            </IndividualRecipes>
+
+                                        )
+
+                                    })
+
+                            }
+
+
                         </Recipes>
                     </div>
 
