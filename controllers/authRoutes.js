@@ -2,7 +2,8 @@ const path = require("path");
 const router = require("express").Router();
 const db = require("../models");
  //const User = require("../models/user")
-
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const axios = require("axios");
 const passport = require('../Passport')
 // Request user info
@@ -67,14 +68,21 @@ const userFunction = {
             // })
             // ADD VALIDATION
             const { username, password, email } = req.body.user
+
+            console.log(password)
+
             db.User.findOne({ 'username': username }, (err, userMatch) => {
                 if (userMatch) {
                     console.log(`Sorry, already a user with the username: ${username}`)                    
                 }
                 const newUser = req.body.user
+                
                 console.log(newUser)
-                db.User
-                    .create(newUser)
+                bcrypt.hash(password, saltRounds, function(err, hash){
+                    db.User
+                    .create({"username": username, "password": hash, "email": email})
+                })
+                
                     // .catch(err) 
                         //    console.log(savedUser)
                         //     if (err) return res.json(err)

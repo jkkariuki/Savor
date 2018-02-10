@@ -3,7 +3,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
+const session = require('express-session')
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -12,6 +12,8 @@ const {authRoutes, savorController  } = require('./controllers');
 
 // Authentication Packages
 const passport = require('passport');
+require('dotenv').config();
+
 
 // Configure body parser for axios requests
 app.use(bodyParser.json());
@@ -26,11 +28,12 @@ if (process.env.NODE_ENV === 'production'){
 app.use(cookieParser());
 
 // Initialize express session
-app.use(require('express-session')({
-  secret: 'lskjklfsj',
+app.use(session({
+  secret: 'keyboard cat',
   resave: false,
-  saveUninitialized: false
-}));
+  saveUninitialized: false,
+  //cookie: { secure: true }
+}))
 
 // Initialize Passport
 app.use(passport.initialize());
@@ -38,6 +41,8 @@ app.use(passport.session());
 
 // Add routes, both API and view
 app.use(savorController, authRoutes);
+
+
 // Set up promises with mongoose
 mongoose.Promise = Promise;
 // Connect to the Mongo DB
