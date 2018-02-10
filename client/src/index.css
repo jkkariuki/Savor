@@ -36,6 +36,7 @@ h4{
 .logoImage {
     height: 75px;
     width:90px;
+    padding-bottom:0px;
 }
 
 #responseContainer{

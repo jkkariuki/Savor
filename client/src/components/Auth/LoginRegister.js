@@ -93,7 +93,7 @@ class Auth extends React.Component {
                  
                 <input type='checkbox' id='form-switch'/>
 
-                <form id='login-form' action="" method='post' onSubmit = {this.handleLogIn}>
+                <form className="form1" id='login-form' action="" method='post' onSubmit = {this.handleLogIn}>
                     <h1 className="title">Savor</h1>
                     <input type="text" placeholder="Username"  required onChange = {this.handleInputChange}
                     name= "username" value = {this.state.username}/>
@@ -103,7 +103,7 @@ class Auth extends React.Component {
                     <label htmlFor='form-switch'><span>Register</span></label>
                 </form>
 
-                <form id='register-form' action="/auth/signup" method='post' onSubmit = {this.handleFormSubmit}>
+            <form id='register-form' action="/auth/signup" method='post' onSubmit = {this.handleFormSubmit}>
                     <input type="text" placeholder="Username" required onChange = {this.handleInputChange} name = "username"/>
                     <input type="email" placeholder="Email" required onChange = {this.handleInputChange} name="email" value = {this.state.email}/>
                     <input type="password" placeholder="Password" required onChange = {this.handleInputChange} name= "password" value = {this.state.password} />

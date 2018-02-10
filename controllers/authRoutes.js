@@ -4,7 +4,8 @@ const db = require("../models");
  //const User = require("../models/user")
 
 const axios = require("axios");
-const passport = require('../Passport')
+const passport = require('passport');
+const LocalStrategy = require('passport-local').strategy;
 // Request user info
 const userFunction = {
 
@@ -99,6 +100,24 @@ router.post('/api/login', userFunction.authenticate)
 router.use(function (req, res) {
     console.log("something is on");
     res.sendFile(path.join(__dirname, "../client/public/index.html"));
+});
+
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+     User.getUserByUsername(username, function(err, user){
+       if(err){ throw err;
+        if(!user){
+            return done(null, false, {message:" unknown user"})
+        }
+
+       }
+     });
+    }));
+
+router.post('/login',
+passport.authenticate('local', {successRedirec:'/Main', failurReedirec:'/', failureFlash: false}),
+function(req, res) {
+    res.redirect('/')
 });
 
 module.exports = router;

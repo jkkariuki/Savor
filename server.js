@@ -3,6 +3,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const localStrategy = require("passport-local");
+
 
 const PORT = process.env.PORT || 3001;
 const app = express();
