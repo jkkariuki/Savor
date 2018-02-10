@@ -9,8 +9,8 @@ const foodFunction = {
         const ingredients = req.query.food;
        
         console.log(ingredients);
-        console.log(process.env.EDAMAM_ID)
-        console.log(process.env.EDAMAM_KEY)
+        // console.log(process.env.EDAMAM_ID)
+        // console.log(process.env.EDAMAM_KEY)
         
 
         axios.get("https://api.edamam.com/search?q=" + ingredients + "&app_id=" + process.env.EDAMAM_ID + "&app_key=" + process.env.EDAMAM_KEY)
