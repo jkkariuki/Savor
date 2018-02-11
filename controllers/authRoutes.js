@@ -80,17 +80,16 @@ const userFunction = {
                 console.log(newUser)
                 bcrypt.hash(password, saltRounds, function(err, hash){
                     db.User
-                    .create({"username": username, "password": hash, "email": email}), function(err, results){
+                    .create({"username": username, "password": hash, "email": email}, function(err, results){
                         console.log("here")
-                        if (err) throw err;
-                        db.User.find().sort({_id: -1}), function(error, results){
-                        console.log("hello")
-                        console.log("last signin" + results)
+                        if (err){
+                            return err
                         }
-
-                    }
-
-
+                        db.User.find().sort({_id: -1}, function(error, results){
+                            console.log("hello")
+                            console.log("last signin" + results)
+                        })
+                    })
                 })
                 
                     // .catch(err) 
