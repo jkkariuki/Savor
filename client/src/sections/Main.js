@@ -161,7 +161,7 @@ class Main extends React.Component {
                         }
                         console.log(apiData);
                         context.setState({ recipex: apiData })
-                        context.setState({zeroRecipes: false})
+                        context.setState({ zeroRecipes: false })
                         console.log(this.state.recipex)
                     }
 
@@ -225,16 +225,16 @@ class Main extends React.Component {
                                                 <br />
 
                                             </strong>
-
+                                            <button className="button"
+                                                onClick={() => this.useGroceries(item._id)}
+                                            >Query Recipe
+                                    </button>
                                             <button className="button"
                                                 onClick={() => this.deleteGroceries(item._id)}
                                             >Delete
                                     </button>
 
-                                            <button className="button"
-                                                onClick={() => this.useGroceries(item._id)}
-                                            >Query Recipe
-                                    </button>
+
                                         </GroceryItem>
                                     );
                                 } else if (item.purchased === true && item.use === true) {
@@ -245,15 +245,16 @@ class Main extends React.Component {
                                                 <h4> ✓</h4>
                                                 <br />
                                             </strong>
+                                            <button className="button"
+                                                onClick={() => this.useGroceries(item._id)}
+                                            >Remove from Recipe
+                                    </button>
 
                                             <button className="button"
                                                 onClick={() => this.deleteGroceries(item._id)}
                                             >Delete
                                     </button>
-                                            <button className="button"
-                                                onClick={() => this.useGroceries(item._id)}
-                                            >Remove from Recipe
-                                    </button>
+
                                         </GroceryItem>
                                     );
                                 }
