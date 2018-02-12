@@ -282,6 +282,10 @@ class Main extends React.Component {
                     </div>
 
                     <div className="recipeSection col-lg-6 col-md-6 col-sm-6">
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 7f742de6ef871ef9d19cf9c542090542f511801e
 
                         <h4 className="sectionTitle title">Recipes</h4>
                         <br />
