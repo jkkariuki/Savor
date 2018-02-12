@@ -1,7 +1,8 @@
 const path = require("path");
 const router = require("express").Router();
 const db = require("../models");
-//const User = require("../models/user")
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const axios = require("axios");
 const passport = require('../Passport')
 // Request user info
@@ -28,26 +29,48 @@ const userFunction = {
     create: function (req, res) {
         console.log("create has been hit")
         console.log(req.body)
-        const {
-            username,
-            password,
-            email
-        } = req.body.user
-        db.User.findOne({
-            'username': username
-        }, (err, userMatch) => {
-            if (userMatch) {
-                console.log(`Sorry, already a user with the username: ${username}`)
-            }
-            const newUser = req.body.user
-            console.log(newUser)
-            db.User
-                .create(newUser)
+            // db.user
+            // .find(req.body.user.username)
+            // .then(dbModel => res.json (dbModel))
+            // .catch(err => {
+            //     res.status(422).json(err)
+            //     console.log("!*&!*!%!^&%!")
+            // })
+            // ADD VALIDATION
+            const { username, password, email } = req.body.user
 
-        })
-    }
+            console.log(password)
+
+            db.User.findOne({ 'username': username }, (err, userMatch) => {
+                if (userMatch) {
+                    console.log(`Sorry, already a user with the username: ${username}`)                    
+                }
+                const newUser = req.body.user
+                
+                console.log(newUser)
+                bcrypt.hash(password, saltRounds, function(err, hash){
+                    db.User
+                    .create({"username": username, "password": hash, "email": email}, function(err, results){
+                        console.log("here")
+                        if (err){
+                            return err
+                        }
+                        db.User.find().sort({_id: -1}, function(error, results){
+                            console.log("hello")
+                            console.log("last signin" + results)
+                        })
+                    })
+                })
+                
+                    // .catch(err) 
+                        //    console.log(savedUser)
+                        //     if (err) return res.json(err)
+                        //     return res.json(savedUser)
+                        
+            })
+        }
+            
 }
-
 
 // Fetch current user from session
 // router.get('/api/currentuser', db.getCurrentUser);
