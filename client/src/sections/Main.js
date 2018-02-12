@@ -152,8 +152,8 @@ class Main extends React.Component {
                     //when that api returns data, set the state of loading to false
                     context.setState({ loading: false })
 
-                    //if there is api data, loop through it and push it into an array called apiData, then set the state of recipex to the apiData
-                    if (data.data.length > 0) {
+                    //if there is api data, and the user is querying recipes loop through the recipes and push them into an array called apiData, then set the state of recipex to the apiData
+                    if (data.data.length > 0 && context.state.apiParams.length > 0) {
                         console.log("this is the api data " + data);
                         let apiData = []
                         for (let i = 0; i < data.data.length; i++) {
@@ -161,12 +161,13 @@ class Main extends React.Component {
                         }
                         console.log(apiData);
                         context.setState({ recipex: apiData })
-
+                        context.setState({zeroRecipes: false})
+                        console.log(this.state.recipex)
                     }
 
 
-                    //if the user marked get recipe on a food item and there is no response data, call tne noRecipes function.
-                    else if (data.data.length === 0 && context.state.use === true) {
+                    //if the user is not querying recipes or no recipes are returned based on user's query call the noRecipes function.
+                    else if (context.state.apiParams.length === 0 || data.data.length === 0) {
                         console.log("No data");
 
                         context.noRecipes();
@@ -185,7 +186,6 @@ class Main extends React.Component {
         this.setState({ zeroRecipes: true })
         console.log("burrrrp: " + this.state.zeroRecipes);
         console.log("use: " + this.state.use);
-        // this.getRecipes()
     }
 
 
@@ -282,10 +282,8 @@ class Main extends React.Component {
                     </div>
 
                     <div className="recipeSection col-lg-6 col-md-6 col-sm-6">
-<<<<<<< HEAD
-=======
-  
->>>>>>> 7f742de6ef871ef9d19cf9c542090542f511801e
+
+
 
                         <h4 className="sectionTitle title">Recipes</h4>
                         <br />
@@ -301,7 +299,7 @@ class Main extends React.Component {
                                 this.state.zeroRecipes === true ?
                                     <IndividualRecipes >
                                         <div>
-                                            <h4>No recipes match your query</h4>
+                                            <h4>No recipes to display</h4>
                                         </div>
                                     </IndividualRecipes>
                                     :
