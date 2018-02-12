@@ -163,9 +163,7 @@ class Main extends React.Component {
                         context.setState({ recipex: apiData })
 
                     }
-                    // else if(data.data.length === 0 && context.state.use===false){
-                    //     context.setState({ recipex: [] })
-                    // }
+
 
                     //if the user marked get recipe on a food item and there is no response data, call tne noRecipes function.
                     else if (data.data.length === 0 && context.state.use === true) {
@@ -173,8 +171,6 @@ class Main extends React.Component {
 
                         context.noRecipes();
                     }
-
-
                 })
                 .catch(function (err) {
                     console.log(err);
@@ -285,8 +281,8 @@ class Main extends React.Component {
                         </GroceryList>
                     </div>
 
-
                     <div className="recipeSection col-lg-6 col-md-6 col-sm-6">
+
                         <h4 className="sectionTitle title">Recipes</h4>
                         <br />
                         <Recipes>
@@ -298,7 +294,6 @@ class Main extends React.Component {
                                     </div>
                                 </IndividualRecipes>
                                 :
-
                                 this.state.zeroRecipes === true ?
                                     <IndividualRecipes >
                                         <div>
@@ -306,7 +301,6 @@ class Main extends React.Component {
                                         </div>
                                     </IndividualRecipes>
                                     :
-
                                     this.state.recipex.map(recipe => {
                                         return (
                                             <IndividualRecipes>
@@ -323,15 +317,10 @@ class Main extends React.Component {
                                                     {recipe.ingredientLines}
                                                 </div>
 
-
                                             </IndividualRecipes>
-
                                         )
-
                                     })
-
                             }
-
 
                         </Recipes>
                     </div>
