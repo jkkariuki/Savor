@@ -3,42 +3,23 @@ const router = require("express").Router();
 const db = require("../models");
 //const User = require("../models/user")
 const axios = require("axios");
-<<<<<<< HEAD
-const passport = require('../passport');
-const LocalStrategy = require('passport-local').Strategy;
-
-
-=======
 const passport = require('../Passport')
->>>>>>> 31764f73c8b7645df184161a8b57cfb54f09f004
 // Request user info
 const userFunction = {
 
     authenticate: function (req, res, next) {
-<<<<<<< HEAD
         db.User.findOne({
             'username': req.body.user.username,
             'password': req.body.user.password
         }, (err, userMatch) => {
-=======
-        db.User.findOne({'username': req.body.user.username, 'password': req.body.user.password }, (err, userMatch) => {
->>>>>>> 31764f73c8b7645df184161a8b57cfb54f09f004
             if (userMatch) {
                 console.log(`Welcome: ${req.body.user.username}`);
                 const loggedInUser = req.body.user.username;
                 console.log(loggedInUser)
                 res.json(loggedInUser);
-<<<<<<< HEAD
-                passport.authenticate('local-strategy',)
-=======
-                return loggedInUser
->>>>>>> 31764f73c8b7645df184161a8b57cfb54f09f004
-
-            }
-            else{
+            } else {
                 console.log(`Invalid Username and/or password`)
             }
-            
 
         })
     },
@@ -72,17 +53,7 @@ const userFunction = {
 // router.get('/api/currentuser', db.getCurrentUser);
 router.post("/api/signup", userFunction.create)
 
-router.post('/api/login', function(req, res, next) {
-        console.log(req.body.user.username)
-    passport.authenticate(req.body.user.username, req.body.user.password),
-    (request, result) => {
-        console.log("loggeed in" + request)
-
-    }
-}
-
-)
-
+router.post('/api/login', userFunction.authenticate)
 // router.get('/user', userFunction.getUser)
 
 router.use(function (req, res) {
@@ -90,7 +61,6 @@ router.use(function (req, res) {
     res.sendFile(path.join(__dirname, "../client/public/index.html"));
 });
 
-<<<<<<< HEAD
 
 
 module.exports = router;
@@ -99,7 +69,7 @@ module.exports = router;
 //     '/login',
 //     function (req, res, next) {
 //         console.log('routes/user.js, login, req.body: ');
-        
+
 //         console.log(req.body)
 //         next()
 //     },
@@ -112,6 +82,3 @@ module.exports = router;
 //         res.send(userInfo);
 //     }
 // )
-=======
-module.exports = router;
->>>>>>> 31764f73c8b7645df184161a8b57cfb54f09f004

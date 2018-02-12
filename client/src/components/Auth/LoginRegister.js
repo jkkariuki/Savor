@@ -3,9 +3,6 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import API from "../../utils/API";
 import "./LoginRegister.css";
-// import axios from 'axios';
-
-
 
 class Auth extends React.Component {
     constructor(props) {
@@ -86,15 +83,8 @@ class Auth extends React.Component {
         }else{
         
         if (this.state.loggedInUser){
-<<<<<<< HEAD
             return <Redirect to = {{ pathname: this.state.redirectTo}}/>
         }else{
-=======
-           
-            return <Redirect to = {{ pathname: this.state.redirectTo}}/>;
-        }
-        else{
->>>>>>> 31764f73c8b7645df184161a8b57cfb54f09f004
 
         return (
             <div>

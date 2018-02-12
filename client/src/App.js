@@ -1,10 +1,14 @@
 
-import React from "react";
+import React, { Component } from "react";
+import BackgroundSlideShow from 'react-background-slideshow';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Main from "./sections/Main";
 import Auth from "./components/Auth/LoginRegister";
 
 
+import image1 from './assets/1.jpg'
+import image2 from './assets/2.jpg'
+import image3 from './assets/3.jpg'
 
   
   
@@ -35,6 +39,9 @@ import Auth from "./components/Auth/LoginRegister";
 
                 <Switch>
                 <Route exact path="/" render={() => {
+                        <div>
+                          <BackgroundSlideShow images={[ image1, image2, image3 ]} />
+                        </div>
                     return <Auth updateLoggedInUser ={this.updateLoggedInUser.bind(this)} />    
                 }} />
                 <Route exact path="/Main" render={() => {
