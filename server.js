@@ -4,9 +4,10 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require('express-session')
+var MongoDBStore = require('connect-mongodb-session')(session);
 const PORT = process.env.PORT || 3001;
 const app = express();
-
+const LocalStrategy = require('passport-local').Strategy;
 //Controllers
 const {authRoutes, savorController  } = require('./controllers');
 
@@ -26,10 +27,21 @@ if (process.env.NODE_ENV === 'production'){
 
 // Cookie Parser middleware initialization
 app.use(cookieParser());
+var store = new MongoDBStore(
+  {
+    uri: 'mongodb://localhost:27017/connect_mongodb_session_test',
+    collection: 'mySessions'
+  });
 
+// Catch errors
+store.on('error', function(error) {
+  assert.ifError(error);
+  assert.ok(false);
+});
 // Initialize express session
 app.use(session({
   secret: 'keyboard cat',
+  store: store,
   resave: false,
   saveUninitialized: false,
   //cookie: { secure: true }
@@ -42,6 +54,19 @@ app.use(passport.session());
 // Add routes, both API and view
 app.use(savorController, authRoutes);
 
+const User = require('./models/user');
+// passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    console.log("login username: " + user.username)
+    console.log("login password: " + user.password)
+      return done(null, "asfd");
+    
+  }
+));
 
 // Set up promises with mongoose
 mongoose.Promise = Promise;

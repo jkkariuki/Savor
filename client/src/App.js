@@ -23,6 +23,11 @@ import Auth from "./components/Auth/LoginRegister";
         
     };
 
+    sendCurrentUser = () => {
+        const currentUser = this.state.loggedInUser;
+        return currentUser
+    }
+
     
 
     render() {
@@ -37,7 +42,7 @@ import Auth from "./components/Auth/LoginRegister";
                     return <Auth updateLoggedInUser ={this.updateLoggedInUser.bind(this)} />    
                 }} />
                 <Route exact path="/Main" render={() => {
-                    return <Main getCurrentUser={this.state.loggedInUser} 
+                    return <Main updateLoggedInUser={this.state.loggedInUser} 
                     />    
                 }}/>
                 </Switch>

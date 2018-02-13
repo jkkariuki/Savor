@@ -1,6 +1,7 @@
 const path = require("path");
 const router = require("express").Router();
 const axios = require("axios");
+var mongojs = require("mongojs");
 const db = require("../models");
 
 const foodFunction = {
@@ -26,7 +27,7 @@ const foodFunction = {
     create: function (req, res) {
         //this route saves the groceries
         console.log("the create route is being hit");
-        console.log(JSON.stringify(req.body));
+        console.log(req.body);
         db.grocerylist
             .create(req.body)
             .then(dbModel => res.json(dbModel))
@@ -35,11 +36,16 @@ const foodFunction = {
     },
 
     read: function (req, res) {
+        console.log("this should be the body " + req.query.currentUser)
       //this route sends database grocery items to front end
-      console.log("the read route has been hit");
-        db.grocerylist
-            .find(req.query)
-            .then(dbModel => res.json (dbModel))
+      const objId = 'ObjectId("' + req.query.currentUser + '")';
+      console.log(objId);
+        db.grocerylist            
+            .find({"user":  mongojs.ObjectId(req.query.currentUser)})
+            .then(function (response) {
+                console.log(response)
+                res.json(response)
+            })
             .catch(err => res.status(422).json(err))
     },
 

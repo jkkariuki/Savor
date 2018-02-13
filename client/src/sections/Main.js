@@ -1,7 +1,7 @@
 import React from "react";
 import LoginRegister from "../components/Auth/LoginRegister"
 import API from "../utils/API";
-import Auth from "../components/Auth/LoginRegister"
+import PropTypes from 'prop-types';
 import { GroceryList, GroceryItem } from "../components/GroceryList";
 import { Recipes, IndividualRecipes } from "../components/Recipes";
 
@@ -38,8 +38,7 @@ class Main extends React.Component {
             //when this is set to true, the loading spinner will be activated.
             loading: false,
 
-            currentUser: null
-
+            currentUser: ""
 
         };
     }
@@ -48,13 +47,36 @@ class Main extends React.Component {
 
     //when the page loads the getGroceries function is called
     componentDidMount() {
-        this.getGroceries();
+        this.getUser();
+        
     }
 
+
+    getUser = () => {
+        API.getCurrentUser()
+        .then(res => {
+            console.log("The user should be here: " + res.data);
+            this.setState({
+                currentUser: res.data
+            })
+            console.log("the state should be set : " + this.state.currentUser)
+            // this.state({
+            //     currentUser: res.data
+            // })
+            this.getGroceries();
+            
+        })
+        
+    } 
     //this function retrieves groceries from the database, loops through them, pushes them to an array and then updates the states of groceries with that array.
 
     getGroceries = () => {
-        API.getGroceries()
+        console.log("the data : " )
+        console.log("nothing here : " + this.state.currentUser);
+        
+        API.getGroceries({
+            currentUser: this.state.currentUser
+        })
             .then(res => {
                 let savedItems = []
                 for (let i = 0; i < res.data.length; i++) {
@@ -115,8 +137,10 @@ class Main extends React.Component {
 
     saveGroceries = (event) => {
         event.preventDefault();
+        
 
         API.saveGroceries({
+            user: this.state.currentUser,
             food: this.state.foodItem,
             purchased: false
         })
@@ -197,13 +221,26 @@ class Main extends React.Component {
         // this.getRecipes()
     }
 
-    setCurrentUser =() =>{
-        this.setState({
-            currentUser: this.props.getCurrentUser
-        })
-       
-    }
+    // setCurrentUser = (user) =>{
+      
+    //    this.setState({
+    //        currentUser: user
+    //    })
+    //    console.log("currently logged In:" + this.state.currentUser);
 
+    // }
+
+    // update = () =>{
+
+    //     this.props.updateLoggedInUser(loggedInUser);
+    //     this.setState({
+    //         currentUser : e.target.value
+    //     })
+
+    //     console.log("recognize mee here: " + this.state.currentUser)
+    // }
+
+    
     
 
 
@@ -211,7 +248,6 @@ class Main extends React.Component {
 
 
     render() {
-        console.log(this.props.getCurrentUser)
         return (
             <div>
                 <h3>Welcome {this.props.getCurrentUser}</h3>
@@ -361,7 +397,11 @@ class Main extends React.Component {
 
             </div>
         )
+          
     }
 }
 
 export default Main;
+Main.props = {
+    updateLoggedInUser: PropTypes.string,
+}

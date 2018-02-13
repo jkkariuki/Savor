@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import API from "../../utils/API";
+import Main from "../../sections/Main.js"
 import { Redirect } from "react-router-dom"
 import "./LoginRegister.css"
 
@@ -14,6 +15,7 @@ class Auth extends React.Component {
             password: "",
             email: "",
             loggedInUser: "",
+            currentUserId: "",
             redirectTo: "",
         };
     }
@@ -31,19 +33,26 @@ class Auth extends React.Component {
       };
 
       handleFormSubmit = (event) => {
+        const self = this;
+        
           event.preventDefault();
           API.addNewUser({              
                 username: this.state.username,
                 password: this.state.password,
                 email: this.state.email
               }
-          ).then(this.setState({
-              username: "",
-              password: "",
-              email: "",
-              redirectTo: "/"
-              
-            }))
+          ).then(res => {
+              console.log("userID : " + res.data)
+              this.setState({
+                username: "",
+                password: "",
+                email: "",
+                loggedInUser: res.data,
+                redirectTo: "/Main"                
+                })
+            self.someFn();
+            self.sendCurrentUser()                
+          })
             .catch(err => console.log("Save error:" + err));           
     }
 
@@ -74,7 +83,12 @@ class Auth extends React.Component {
         const currentUser = this.state.loggedInUser;
         console.log("currentUser HERE:" + currentUser)
         this.props.updateLoggedInUser(currentUser)
-    }     
+    }
+
+    
+    
+    
+   
 
     
 
@@ -82,7 +96,7 @@ class Auth extends React.Component {
 
 
     render() {
-        if (this.state.loggedInUser){
+        if (this.state.loggedInUser || this.state.currentUserId){
            
             return <Redirect to = {{ pathname: this.state.redirectTo}}/>;
         }

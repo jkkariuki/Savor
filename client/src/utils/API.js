@@ -9,9 +9,10 @@ export default {
    },
 
    //create a route for getting groceries from database
-   getGroceries: function(){
+   getGroceries: function(currentUser){
+       console.log("SOMETHING NOTICEABLE " + currentUser.currentUser)
        console.log("the get grocery route has been hit");
-       return axios.get("/api/groceries");
+       return axios.get("/api/groceries", {params :currentUser});
    },
 
    //create a route for deleting groceries from database
@@ -41,7 +42,8 @@ export default {
    },
    // User API calls
    getCurrentUser: function(){
-       return axios.get('/auth/api/currentuser');
+       console.log("user router has been hit!!")
+       return axios.get('/api/currentuser');
    },
 
    addNewUser: function(user){
@@ -50,7 +52,7 @@ export default {
    },
    
    loginUser: function(user){
-       console.log(user)
+       console.log("loggin attempt: " + user.username + user.password )
        return axios.post('/api/login', {user});
    }
 
