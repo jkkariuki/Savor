@@ -53,6 +53,11 @@ export default {
    loginUser: function(user){
        console.log("loggin attempt: " + user.username + user.password )
        return axios.post('/api/login', user);
+   },
+   
+   grabUser: function(){
+       console.log("grab User has been hit")
+       return axios.get('/api/grab');
    }
 
 

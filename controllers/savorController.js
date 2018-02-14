@@ -73,7 +73,15 @@ const foodFunction = {
             .then(dbModel => dbModel.remove())
             .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
-    }
+    },
+
+    grabUser: function(req, res){
+        console.log("grab user route hit on backend")
+        db.currentUser
+            .findOne().sort({_id: -1})
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+        }
 }
 
 router.get("/api/recipes", foodFunction.getRecipes)
@@ -82,6 +90,7 @@ router.get("/api/groceries", foodFunction.read)
 router.delete("/api/groceries:id", foodFunction.delete)
 router.patch("/api/groceries:id", foodFunction.update)
 router.patch("/api/useGroceries:id", foodFunction.use)
+router.get('/api/grab', foodFunction.grabUser)
 
 
 // If no API routes are hit, send the React app

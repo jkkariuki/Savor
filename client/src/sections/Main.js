@@ -51,10 +51,9 @@ class Main extends React.Component {
        
         console.log("CURRENT USEERRR" )
         console.log(" PROPS!!!" + this.props.userId)
+         this.grabUser();
          
-         
-        // console.log("USER ID HERE! " + id)
-         this.getGroceries();
+        
         
     }
 
@@ -80,14 +79,10 @@ class Main extends React.Component {
     //this function retrieves groceries from the database, loops through them, pushes them to an array and then updates the states of groceries with that array.
 
     getGroceries = () => {
-        const localStorageId = localStorage.getItem("currentUser");
-        console.log("id for local storage:" + localStorageId)
-        this.setState({
-            currentUser : localStorageId
-        })
+       
 
         API.getGroceries({
-             currentUser: localStorageId
+              currentUser: this.state.currentUser
         })
             .then(res => {
                 let savedItems = []
@@ -149,10 +144,9 @@ class Main extends React.Component {
 
     saveGroceries = (event) => {
         event.preventDefault();        
-        const localStorageId2 = localStorage.getItem("currentUser");
 
         API.saveGroceries({
-            user: localStorageId2,
+            user: this.state.currentUser,
             food: this.state.foodItem,
             purchased: false
         })
@@ -232,6 +226,23 @@ class Main extends React.Component {
          console.log("burrrrp: " + this.state.zeroRecipes);
          console.log("use: " + this.state.use);
         // this.getRecipes()
+    }
+
+    grabUser = () =>{
+        API.grabUser()
+        .then(res => { 
+            console.log(res.data);
+            const user = res.data.userID
+            this.setState({
+                currentUser: user
+            })
+            console.log("STATE IS HERE : " + this.state.currentUser)
+            this.getGroceries();
+            
+        })
+
+
+       
     }
 
     // setCurrentUser = (user) =>{

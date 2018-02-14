@@ -42,15 +42,15 @@ class Auth extends React.Component {
               }
           ).then(res => {
               console.log("userID : " + res.data)
+              const currentUser = res.data
               this.setState({
                 username: "",
                 password: "",
                 email: "",
-                loggedInUser: res.data,
-                redirectTo: "/Main"                
+                //loggedInUser: currentUser,
+                // redirectTo: "/"                
                 })
             
-                localStorage.setItem("currentUser", res.data); 
                           
             // self.someFn();
           })
@@ -74,7 +74,6 @@ class Auth extends React.Component {
                 loggedInUser: res.data ,
                 redirectTo: "/Main"         
               })
-              localStorage.setItem("currentUser", res.data); 
               
               
             //  self.someFn()

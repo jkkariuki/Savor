@@ -96,7 +96,6 @@ const userFunction = {
                 bcrypt.hash(password, saltRounds, function(err, hash){
                     db.User
                     .create({"username": username, "password": hash, "email": email}, function(err, results){
-                        console.log("here")
                         if (err){
                             return err
                         }
@@ -163,13 +162,26 @@ router.post("/api/signup", userFunction.create)
 router.post('/api/login', passport.authenticate("local"), function(req,res){
     console.log("auth")
     console.log("This is Authenticate :" + req.user)
-    res.json(req.user._id)
+    console.log("This is Authenticate 2: " + req.user._id)
+   const currentUser = {
+       userID : req.user._id
+   }
+   console.log("ID HERE: " + currentUser)
+    db.currentUser.create(currentUser)
+        .then(dbModel => 
+            console.log(dbModel))
+            //es.json(dbModel))
+        .catch(err => console.log(err));    
+
+     res.json(req.user._id)
 }) 
 // router.get('/user', userFunction.getUser)
 
 
 router.use(function (req, res) {
     console.log("something is on");
+
+
     res.sendFile(path.join(__dirname, "../client/public/index.html"));
 });
 
