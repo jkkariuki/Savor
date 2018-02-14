@@ -1,17 +1,10 @@
 
 import React, { Component } from "react";
-import BackgroundSlideShow from 'react-background-slideshow';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Main from "./sections/Main";
-import Auth from "./components/Auth/LoginRegister";
+import Login from "./components/Login/Login";
+import Register from "./components/Register/Register";
 
-
-import image1 from './assets/1.jpg'
-import image2 from './assets/2.jpg'
-import image3 from './assets/3.jpg'
-
-  
-  
   class App extends React.Component {
     constructor(props) {
       super(props);
@@ -28,6 +21,11 @@ import image3 from './assets/3.jpg'
         
     };
 
+    sendCurrentUser = () => {
+        const currentUser = this.state.loggedInUser
+        return currentUser
+    }
+
     
 
     render() {
@@ -36,16 +34,17 @@ import image3 from './assets/3.jpg'
             <Router>
               <div>
                 {/* <Navbar /> */}
-
                 <Switch>
                 <Route exact path="/" render={() => {
-                        <div>
-                          <BackgroundSlideShow images={[ image1, image2, image3 ]} />
-                        </div>
-                    return <Auth updateLoggedInUser ={this.updateLoggedInUser.bind(this)} />    
-                }} />
+                    return <Login updateLoggedInUser ={this.updateLoggedInUser.bind(this)}
+                     />   
+                }}/>
+                <Route exact path='/Register' render={()=> {
+                    return <Register 
+                    />
+                }}/>
                 <Route exact path="/Main" render={() => {
-                    return <Main getCurrentUser={this.state.loggedInUser} 
+                    return <Main userId={this.state.loggedInUser} 
                     />    
                 }}/>
                 </Switch>

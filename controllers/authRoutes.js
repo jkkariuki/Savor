@@ -1,32 +1,77 @@
 const path = require("path");
 const router = require("express").Router();
 const db = require("../models");
+ //const User = require("../models/user")
 const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
 const saltRounds = 10;
-const axios = require("axios");
-const passport = require('../Passport')
+const passport = require('passport');
+mongoose.Promise = global.Promise;
+// const passport = require('../Passport')
+// const LocalStrategy = require('../Passport/LocalStrategy')
+
+
 // Request user info
 const userFunction = {
 
-    authenticate: function (req, res, next) {
-        db.User.findOne({
-            'username': req.body.user.username,
-            'password': req.body.user.password
-        }, (err, userMatch) => {
-            if (userMatch) {
-                console.log(`Welcome: ${req.body.user.username}`);
-                const loggedInUser = req.body.user.username;
-                console.log(loggedInUser)
-                res.json(loggedInUser);
-            } else {
-                console.log(`Invalid Username and/or password`)
-            }
+    // getUser: function (req, res, next){
+    //     console.log('====User====')
+    //     console.log(req.user)
+    //     if (req.user) {
+    //         return res.json({
+    //             user: req.user
+    //         })
+    //     } else {
+    //         return res.json({
+    //             user: null
+    //         })
+    //     }
+    // },
+    getUser : function(req, res){
+        console.log("user route2 has been hit!!")
 
-        })
+        db.User
+        .findOne({_id: -1})
+            .then(data =>{
+                
+            console.log("hello")
+            console.log("last signin" + data._id);
+            res.json(data._id)
+            })
+            .catch(err => res.status(422).json(err))
     },
+    
 
+    // authenticate: (req,res)=> {        
+    //     console.log("AUTH BODY :" + req.body.username)
+    //     // db.findOne({"username": req.body.username})            
+    //     passport.authenticate("local"), function(req, res) {               
+            
+                
+    //     }
+                  
+    // },
+        // .catch(err) 
+        //     if (err) return res.json(err)        
+   
+        // console.log(req.body)
+        // console.log('===================')
+        // next();    
+        // passport.authenticate('local'), (req, res) => {
+        //     console.log('POST to /login')
+        //     const user = JSON.parse(JSON.stringify(req.body.user))
+        //     const cleanUser = Object.assign({}, user)
+        //     if (cleanUser.local) {
+        //         console.log('Deleting ${cleanUser.local.password}')
+        //         delete cleanUser.local.password
+        //     }
+        //     res.json({
+        //         user: cleanUser
+        //     })
+        // }
+    
 
-    create: function (req, res) {
+    create: function(req, res){
         console.log("create has been hit")
         console.log(req.body)
             // db.user
@@ -55,10 +100,23 @@ const userFunction = {
                         if (err){
                             return err
                         }
-                        db.User.find().sort({_id: -1}, function(error, results){
+                        db.User.findOne().sort({_id: -1})
+                            .then(data =>{
+                                
                             console.log("hello")
-                            console.log("last signin" + results)
-                        })
+                            console.log("last signin" + data._id)
+                            const user_data = data
+
+                            req.login(user_data, function(err){
+                                res.json(req.user._id)
+                                console.log(req.user._id);
+                                console.log(req.isAuthenticated())
+                                
+                                return user_data
+                            })
+                            })
+                            .catch(err) 
+                                if (err) return res.json(err)
                     })
                 })
                 
@@ -72,36 +130,47 @@ const userFunction = {
             
 }
 
+
+
+passport.serializeUser((user_data, done) => {
+	console.log('=== serialize ... called ===')
+	console.log(user_data) // the whole raw user object!
+	console.log('---------')
+	done(null,  user_data )
+})
+
+passport.deserializeUser((user_data, done) => {
+	console.log('DEserialize ... called')
+	db.User.findOne(
+		{ _id: user_data._id},
+		'username password email',
+		(err, user) => {
+			console.log('======= DESERILAIZE USER CALLED ======')
+			console.log(user)
+			console.log('--------------')
+			done(null, user)
+		}
+	)
+})
+
+
+
+
 // Fetch current user from session
 // router.get('/api/currentuser', db.getCurrentUser);
+router.get('/api/currentuser', userFunction.getUser)
 router.post("/api/signup", userFunction.create)
-
-router.post('/api/login', userFunction.authenticate)
+router.post('/api/login', passport.authenticate("local"), function(req,res){
+    console.log("auth")
+    console.log("This is Authenticate :" + req.user)
+    res.json(req.user._id)
+}) 
 // router.get('/user', userFunction.getUser)
+
 
 router.use(function (req, res) {
     console.log("something is on");
     res.sendFile(path.join(__dirname, "../client/public/index.html"));
 });
 
-
-
 module.exports = router;
-
-// router.post(
-//     '/login',
-//     function (req, res, next) {
-//         console.log('routes/user.js, login, req.body: ');
-
-//         console.log(req.body)
-//         next()
-//     },
-//     passport.authenticate('local'),
-//     (req, res) => {
-//         console.log('logged in', req.user);
-//         var userInfo = {
-//             username: req.user.username
-//         };
-//         res.send(userInfo);
-//     }
-// )

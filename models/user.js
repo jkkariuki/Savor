@@ -1,37 +1,43 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const bcrypt = require('bcryptjs');
-mongoose.promise = Promise
+const passportLocalMongoose = require('passport-local-mongoose');
 
-const userSchema = new Schema ({
+// const bcrypt = require('bcryptjs');
+
+const User = new Schema ({
     username: {type: String, required: true},
     password: {type: String, required: true},
     email: {type: String, required: true}
 });
 
+User.plugin(passportLocalMongoose);
+User.methods.validPassword = function( pwd ) {
+    // EXAMPLE CODE!
+    return ( this.password === pwd );
+};
 // Define schema methods
 
-userSchema.methods = {
-	checkPassword: function (inputPassword) {
-		return bcrypt.compareSync(inputPassword, this.password)
-	},
-	hashPassword: plainTextPassword => {
-		return bcrypt.hashSync(plainTextPassword, 10)
-	}
-}
+// UserSchema.methods = {
+//     checkPassword: function(inputPassword) {
+//         return bcrypt.compareSync(inputPassword, this.local.password)
+//     },
+//     hashPassword: plainTextPassword => {
+//         return bcrypt.hashSync(plainTextPassword, 10)
+//     }
+// };
 
-// Define hooks for pre-saving
-userSchema.pre('save', function (next) {
-	if (!this.password) {
-		console.log('models/user.js =======NO PASSWORD PROVIDED=======')
-		next()
-	} else {
-		console.log('models/user.js hashPassword in pre save');
-		
-		this.password = this.hashPassword(this.password)
-		next()
-	}
-})
+// // Define hooks for pre-saving
 
-const User = mongoose.model('User', userSchema)
-module.exports = User
+// UserSchema.pre('save', function(next) {
+//     if (!this.local.password) {
+//         console.log('No password provided')
+//         next()
+//     }else{
+//         this.local.password = this.hashPassword(this.local.password)
+//         next()
+//     }
+// });
+
+
+module.exports =  mongoose.model('User', User);
+;

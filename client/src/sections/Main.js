@@ -1,7 +1,7 @@
 import React from "react";
-import LoginRegister from "../components/Auth/LoginRegister"
+import Login from "../components/Login/Login";
 import API from "../utils/API";
-import Auth from "../components/Auth/LoginRegister"
+import PropTypes from 'prop-types';
 import { GroceryList, GroceryItem } from "../components/GroceryList";
 import { Recipes, IndividualRecipes } from "../components/Recipes";
 
@@ -38,8 +38,8 @@ class Main extends React.Component {
             //when this is set to true, the loading spinner will be activated.
             loading: false,
 
-            currentUser: null
-
+            currentUser: ""
+            //JSON.stringify(localStorage.getItem("currentUser"))
 
         };
     }
@@ -48,13 +48,47 @@ class Main extends React.Component {
 
     //when the page loads the getGroceries function is called
     componentDidMount() {
-        this.getGroceries();
+       
+        console.log("CURRENT USEERRR" )
+        console.log(" PROPS!!!" + this.props.userId)
+         
+         
+        // console.log("USER ID HERE! " + id)
+         this.getGroceries();
+        
     }
+
+
+    // getUser = () => {
+    //     API.getCurrentUser()
+    //     .then(res => {
+    //         console.log("The user should be here: " + res.data);
+    //          this.setState({
+    //             currentUser: res.data
+    //         })
+    //         console.log("the state should be set : " + localStorage.getItem("currentUsers"))
+    //         // this.state({
+    //         //     currentUser: res.data
+    //         // })
+    //         this.getGroceries();
+            
+    //     })
+        
+    // }
+
 
     //this function retrieves groceries from the database, loops through them, pushes them to an array and then updates the states of groceries with that array.
 
     getGroceries = () => {
-        API.getGroceries()
+        const localStorageId = localStorage.getItem("currentUser");
+        console.log("id for local storage:" + localStorageId)
+        this.setState({
+            currentUser : localStorageId
+        })
+
+        API.getGroceries({
+             currentUser: localStorageId
+        })
             .then(res => {
                 let savedItems = []
                 for (let i = 0; i < res.data.length; i++) {
@@ -114,12 +148,15 @@ class Main extends React.Component {
     }
 
     saveGroceries = (event) => {
-        event.preventDefault();
+        event.preventDefault();        
+        const localStorageId2 = localStorage.getItem("currentUser");
 
         API.saveGroceries({
+            user: localStorageId2,
             food: this.state.foodItem,
             purchased: false
         })
+
             .then(() => this.getGroceries())
             .then(this.setState({ foodItem: "" }))
             .catch(err => console.log("Save error:" + err))
@@ -197,13 +234,26 @@ class Main extends React.Component {
         // this.getRecipes()
     }
 
-    setCurrentUser =() =>{
-        this.setState({
-            currentUser: this.props.getCurrentUser
-        })
-       
-    }
+    // setCurrentUser = (user) =>{
+      
+    //    this.setState({
+    //        currentUser: user
+    //    })
+    //    console.log("currently logged In:" + localStorage.getItem("currentUsers"));
 
+    // }
+
+    // update = () =>{
+
+    //     this.props.updateLoggedInUser(loggedInUser);
+    //     this.setState({
+    //         currentUser : e.target.value
+    //     })
+
+    //     console.log("recognize mee here: " + localStorage.getItem("currentUsers"))
+    // }
+
+    
     
 
 
@@ -211,7 +261,6 @@ class Main extends React.Component {
 
 
     render() {
-        console.log(this.props.getCurrentUser)
         return (
             <div>
                 <h3>Welcome {this.props.getCurrentUser}</h3>
@@ -361,7 +410,11 @@ class Main extends React.Component {
 
             </div>
         )
+          
     }
 }
 
 export default Main;
+Main.props = {
+    updateLoggedInUser: PropTypes.string,
+}
