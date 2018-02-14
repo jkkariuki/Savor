@@ -19,7 +19,7 @@ import Auth from "./components/Auth/LoginRegister";
         this.setState({
             loggedInUser: currentUser
         });
-        console.log("current user is" + this.state.loggedInUser)
+        console.log(this.state.loggedInUser)
         
     };
 
@@ -31,7 +31,7 @@ import Auth from "./components/Auth/LoginRegister";
     
 
     render() {
-      
+        console.log("current user is" + this.state.loggedInUser)
         return (
             <Router>
               <div>
@@ -42,7 +42,7 @@ import Auth from "./components/Auth/LoginRegister";
                     return <Auth updateLoggedInUser ={this.updateLoggedInUser.bind(this)} />    
                 }} />
                 <Route exact path="/Main" render={() => {
-                    return <Main updateLoggedInUser={this.state.loggedInUser} 
+                    return <Main userId={this.state.loggedInUser} 
                     />    
                 }}/>
                 </Switch>

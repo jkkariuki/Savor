@@ -15,7 +15,6 @@ class Auth extends React.Component {
             password: "",
             email: "",
             loggedInUser: "",
-            currentUserId: "",
             redirectTo: "",
         };
     }
@@ -50,8 +49,10 @@ class Auth extends React.Component {
                 loggedInUser: res.data,
                 redirectTo: "/Main"                
                 })
-            self.someFn();
-            self.sendCurrentUser()                
+            
+                localStorage.setItem("currentUser", res.data); 
+                          
+            // self.someFn();
           })
             .catch(err => console.log("Save error:" + err));           
     }
@@ -73,10 +74,14 @@ class Auth extends React.Component {
                 loggedInUser: res.data ,
                 redirectTo: "/Main"         
               })
-             self.someFn()
-            }).catch(err => console.log("Save error:" + err)); 
-            
+              localStorage.setItem("currentUser", res.data); 
+              
+              
+            //  self.someFn()
+            }).catch(err => console.log("Save error:" + err));             
     }
+
+   
 
     someFn = () =>{
         
@@ -96,7 +101,7 @@ class Auth extends React.Component {
 
 
     render() {
-        if (this.state.loggedInUser || this.state.currentUserId){
+        if (this.state.loggedInUser){
            
             return <Redirect to = {{ pathname: this.state.redirectTo}}/>;
         }

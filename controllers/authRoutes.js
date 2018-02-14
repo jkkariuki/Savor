@@ -3,10 +3,13 @@ const router = require("express").Router();
 const db = require("../models");
  //const User = require("../models/user")
 const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
 const saltRounds = 10;
-const axios = require("axios");
-const passport = require('../Passport')
-const LocalStrategy = require('../Passport/LocalStrategy')
+const passport = require('passport');
+mongoose.Promise = global.Promise;
+// const passport = require('../Passport')
+// const LocalStrategy = require('../Passport/LocalStrategy')
+
 
 // Request user info
 const userFunction = {
@@ -26,8 +29,9 @@ const userFunction = {
     // },
     getUser : function(req, res){
         console.log("user route2 has been hit!!")
+
         db.User
-        .findOne().sort({_id: -1})
+        .findOne({_id: -1})
             .then(data =>{
                 
             console.log("hello")
@@ -38,26 +42,15 @@ const userFunction = {
     },
     
 
-    authenticate: function(req,res){
-            passport.authenticate(('passport-local'),function(req, user, info){
-        // console.log("LOGIN ROUTE:" + req.user)
-        console.log("LOGIN ROUTE: 2 " + user);
-        // db.User.findOne(req.body.user)
-        // .then(data =>{            
-        //     console.log("hello")
-        //     console.log("last signin" + data._id)
-        //     const user_data = data
-
-        //     req.login(user_data, function(err){
-        //         res.json(req.user._id)
-        //         console.log(req.user._id);
-        //         console.log(req.isAuthenticated())
+    // authenticate: (req,res)=> {        
+    //     console.log("AUTH BODY :" + req.body.username)
+    //     // db.findOne({"username": req.body.username})            
+    //     passport.authenticate("local"), function(req, res) {               
+            
                 
-        //         return user_data
-        //     })
-        // })
-            })
-    },
+    //     }
+                  
+    // },
         // .catch(err) 
         //     if (err) return res.json(err)        
    
@@ -161,11 +154,17 @@ passport.deserializeUser((user_data, done) => {
 })
 
 
+
+
 // Fetch current user from session
 // router.get('/api/currentuser', db.getCurrentUser);
 router.get('/api/currentuser', userFunction.getUser)
 router.post("/api/signup", userFunction.create)
-router.post('/api/login', userFunction.authenticate) 
+router.post('/api/login', passport.authenticate("local"), function(req,res){
+    console.log("auth")
+    console.log("This is Authenticate :" + req.user)
+    res.json(req.user._id)
+}) 
 // router.get('/user', userFunction.getUser)
 
 

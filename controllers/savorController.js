@@ -38,10 +38,9 @@ const foodFunction = {
     read: function (req, res) {
         console.log("this should be the body " + req.query.currentUser)
       //this route sends database grocery items to front end
-      const objId = 'ObjectId("' + req.query.currentUser + '")';
-      console.log(objId);
+     
         db.grocerylist            
-            .find({"user":  mongojs.ObjectId(req.query.currentUser)})
+            .find({"user":  req.query.currentUser})
             .then(function (response) {
                 console.log(response)
                 res.json(response)

@@ -11,6 +11,10 @@ const User = new Schema ({
 });
 
 User.plugin(passportLocalMongoose);
+User.methods.validPassword = function( pwd ) {
+    // EXAMPLE CODE!
+    return ( this.password === pwd );
+};
 // Define schema methods
 
 // UserSchema.methods = {

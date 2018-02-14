@@ -11,7 +11,6 @@ export default {
    //create a route for getting groceries from database
    getGroceries: function(currentUser){
        console.log("SOMETHING NOTICEABLE " + currentUser.currentUser)
-       console.log("the get grocery route has been hit");
        return axios.get("/api/groceries", {params :currentUser});
    },
 
@@ -53,7 +52,7 @@ export default {
    
    loginUser: function(user){
        console.log("loggin attempt: " + user.username + user.password )
-       return axios.post('/api/login', {user});
+       return axios.post('/api/login', user);
    }
 
 
