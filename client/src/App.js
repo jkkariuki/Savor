@@ -44,7 +44,7 @@ import Register from "./components/Register/Register";
                     />
                 }}/>
                 <Route exact path="/Main" render={() => {
-                    return <Main userId={this.state.loggedInUser} 
+                    return <Main
                     />    
                 }}/>
                 </Switch>
