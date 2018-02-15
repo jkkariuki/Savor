@@ -54,27 +54,28 @@ class Register extends React.Component {
       handleFormSubmit = (event) => {
         const self = this;
         
-        event.preventDefault();
+          event.preventDefault();
           API.addNewUser({              
                 username: this.state.username,
                 password: this.state.password,
-                password2: this.state.password2,
                 email: this.state.email
               }
           ).then(res => {
-              console.log('userID : ' + res.data)
-                this.setState({
+              console.log("userID : " + res.data)
+              const currentUser = res.data
+              this.setState({
                 username: "",
                 password: "",
                 email: "",
-                loggedInUser: res.data,
-                redirectTo: "/"
+                redirectTo: "/"                
                 })
-
-                localStorage.setItem('currentUser', res.data);
-              
-            }).catch(err => console.log("Save error:" + err));           
+            
+                          
+            // self.someFn();
+          })
+            .catch(err => console.log("Save error:" + err));           
     }
+
 
     someFn = () =>{
         
@@ -82,15 +83,6 @@ class Register extends React.Component {
         console.log("currentUser HERE:" + currentUser)
         this.props.updateLoggedInUser(currentUser)
     }
-
-    getValidationState() {
-        const passLength = this.state.password.length;
-        const email = this.state.password.length;
-        if (passLength > 10) return 'success';
-        else if (passLength > 5) return 'warning';
-        else if (passLength > 0) return 'error';
-        return null;
-      }
     
     render() {
         if (this.state.redirectTo) {
@@ -120,7 +112,6 @@ class Register extends React.Component {
 
                 <FormGroup
                     controlId='formBasicText'
-                    validationState={this.getValidationState()}
                 >
                 <ControlLabel>Username</ControlLabel>
                

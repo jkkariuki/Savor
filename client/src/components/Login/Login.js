@@ -29,6 +29,7 @@ class Login extends React.Component {
             loggedInUser: "",
             redirectTo: "",
             show: true,
+            isLoggedIn: false,
 
         };
     }
@@ -48,7 +49,7 @@ class Login extends React.Component {
         });
       };
 
-    handleLogIn = (event) => {
+      handleLogIn = (event) => {
         const self = this
         console.log("hello")
         event.preventDefault();
@@ -59,29 +60,32 @@ class Login extends React.Component {
         ).then(res => {
             console.log(res)
             console.log("user is " + res.data);
-            this.setState({
-                username: "",
-                password: "",
-                loggedInUser: res.data ,
-                redirectTo: "/Main"         
-              })
-              localStorage.setItem('currentUser', res.data);
 
-            //  self.someFn()
-            }).catch(err => console.log("Save error:" + err));
-            
-    }
+            if(res.data){
 
-    someFn = () =>{
+                this.setState({
+                    username: "",
+                    password: "",
+                    loggedInUser: res.data ,
+                    redirectTo: "/Main",
+                    isLoggedIn: true         
+                  })
+            }        
+            self.someFn(this.state.isLoggedIn)
+        }).catch(err => console.log("Save error:" + err));             
+}
+
+
+someFn = (data) =>{
         
-        const currentUser = this.state.loggedInUser;
-        console.log("currentUser HERE:" + currentUser)
-        this.props.updateLoggedInUser(currentUser)
-    }
+    const isLoggedIn = data;
+    console.log("currentUser HERE:" + isLoggedIn)
+    this.props.updateLoggedInUser(isLoggedIn)
+}
     
     
     render() {
-        if (this.state.redirectTo) {
+        if (this.state.loggedInUser) {
             return <Redirect to ={{pathname: this.state.redirectTo }} />
         }else{
 
