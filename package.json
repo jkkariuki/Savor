@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "asyncawait": "^1.0.6",
     "axios": "^0.17.1",
     "bcrypt": "^1.0.3",
     "bcryptjs": "^2.4.3",
@@ -22,6 +23,7 @@
     "bootstrap": "^4.0.0",
     "concurrently": "^3.5.1",
     "connect-flash": "^0.1.1",
+    "connect-mongodb-session": "^1.4.0",
     "cookie-parser": "^1.4.3",
     "dotenv": "^5.0.0",
     "express": "^4.16.2",
@@ -30,7 +32,9 @@
     "flash": "^1.1.0",
     "jsonwebtoken": "^8.1.1",
     "material-ui": "^0.20.0",
+    "mongojs": "^2.5.0",
     "mongoose": "^5.0.2",
+    "morgan": "^1.9.0",
     "nodemon": "^1.14.11",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
@@ -41,10 +45,6 @@
     "react-modal": "^3.1.13",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "^1.1.0",
-    "asyncawait": "^1.0.6",
-    "connect-mongodb-session": "^1.4.0",
-    "mongojs": "^2.5.0",
-    "morgan": "^1.9.0"
+    "react-scripts": "^1.1.0"
   }
 }
