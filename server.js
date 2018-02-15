@@ -46,7 +46,7 @@ var store = new MongoDBStore(
 // Initialize express session
 app.use(session({
   secret: 'keyboard cat',
-  store: store,
+  // store: store,
   resave: false,
   saveUninitialized: false,
   //cookie: { secure: true }
