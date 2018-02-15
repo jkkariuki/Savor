@@ -14,19 +14,7 @@ mongoose.Promise = global.Promise;
 // Request user info
 const userFunction = {
 
-    // getUser: function (req, res, next){
-    //     console.log('====User====')
-    //     console.log(req.user)
-    //     if (req.user) {
-    //         return res.json({
-    //             user: req.user
-    //         })
-    //     } else {
-    //         return res.json({
-    //             user: null
-    //         })
-    //     }
-    // },
+  
     getUser : function(req, res){
         console.log("user route2 has been hit!!")
 
@@ -42,46 +30,12 @@ const userFunction = {
     },
     
 
-    // authenticate: (req,res)=> {        
-    //     console.log("AUTH BODY :" + req.body.username)
-    //     // db.findOne({"username": req.body.username})            
-    //     passport.authenticate("local"), function(req, res) {               
-            
-                
-    //     }
-                  
-    // },
-        // .catch(err) 
-        //     if (err) return res.json(err)        
    
-        // console.log(req.body)
-        // console.log('===================')
-        // next();    
-        // passport.authenticate('local'), (req, res) => {
-        //     console.log('POST to /login')
-        //     const user = JSON.parse(JSON.stringify(req.body.user))
-        //     const cleanUser = Object.assign({}, user)
-        //     if (cleanUser.local) {
-        //         console.log('Deleting ${cleanUser.local.password}')
-        //         delete cleanUser.local.password
-        //     }
-        //     res.json({
-        //         user: cleanUser
-        //     })
-        // }
-    
 
     create: function(req, res){
         console.log("create has been hit")
         console.log(req.body)
-            // db.user
-            // .find(req.body.user.username)
-            // .then(dbModel => res.json (dbModel))
-            // .catch(err => {
-            //     res.status(422).json(err)
-            //     console.log("!*&!*!%!^&%!")
-            // })
-            // ADD VALIDATION
+           
             const { username, password, email } = req.body.user
 
             console.log(password)
@@ -119,11 +73,7 @@ const userFunction = {
                     })
                 })
                 
-                    // .catch(err) 
-                        //    console.log(savedUser)
-                        //     if (err) return res.json(err)
-                        //     return res.json(savedUser)
-                        
+                
             })
         },
 
@@ -135,14 +85,7 @@ const userFunction = {
                         res.json(data)
                     console.log("delete: " + data)
 
-                // req.logout(user_data, functiorn(err){
-                    // res.json(req.user._id)
-                //     console.log("hello");
-                //    console.log( "logout response" + req.res)
-                    
-                    
-                    // return user_data
-                // })
+            
             })
                 
         }

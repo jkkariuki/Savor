@@ -1,5 +1,5 @@
 module.exports = {
-    grocerylist: require("./groceryList"),
+    grocerylist: require("./GroceryList"),
     User: require('./user'),
     currentUser : require('./currentUser')
 };
