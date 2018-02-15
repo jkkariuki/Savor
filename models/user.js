@@ -40,3 +40,4 @@ User.methods.validPassword = function( pwd ) {
 
 
 module.exports =  mongoose.model('User', User);
+;

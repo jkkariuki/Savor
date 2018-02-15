@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import API from "../../utils/API";
 import Main from "../../sections/Main.js"
 import { Redirect } from "react-router-dom"
-import "./LoginRegister.css"
+// import "./LoginRegister.css"
 
 
 

@@ -64,6 +64,7 @@ export default {
        console.log("logout has been hit")
        console.log(currentUser)
        return axios.get('/api/logout', {params: currentUser} )
+
    }
 
 

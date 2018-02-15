@@ -7,8 +7,6 @@ const mongoose = require('mongoose');
 const saltRounds = 10;
 const passport = require('passport');
 mongoose.Promise = global.Promise;
-// const passport = require('../Passport')
-// const LocalStrategy = require('../Passport/LocalStrategy')
 
 
 // Request user info
@@ -184,6 +182,7 @@ router.post("/api/signup", userFunction.create)
 router.post('/api/login', passport.authenticate("local"), function(req,res){
     console.log("auth")
     console.log("This is Authenticate :" + req.user)
+
     console.log("This is Authenticate 2: " + req.user._id)
    const currentUser = {
        userID : req.user._id
@@ -195,7 +194,7 @@ router.post('/api/login', passport.authenticate("local"), function(req,res){
             //es.json(dbModel))
         .catch(err => console.log(err));    
 
-     res.json(req.user._id)
+    res.json(req.user._id)
 }) 
 // router.get('/user', userFunction.getUser)
 

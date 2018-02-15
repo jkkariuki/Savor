@@ -1,7 +1,7 @@
 const path = require("path");
 const router = require("express").Router();
 const axios = require("axios");
-var mongojs = require("mongojs");
+const mongojs = require("mongojs");
 const db = require("../models");
 
 const foodFunction = {
