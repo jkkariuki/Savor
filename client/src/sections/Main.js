@@ -164,6 +164,7 @@ class Main extends React.Component {
             })
                 .then(function (data) {
                     //when that api returns data, set the state of loading to false
+                    console.log(data.data);
                     context.setState({ loading: false })
                     
                     //if there is api data, and the user is querying recipes loop through the recipes and push them into an array called apiData, then set the state of recipex to the apiData
@@ -297,7 +298,7 @@ class Main extends React.Component {
                                     return (
                                         <GroceryItem>
                                             <strong>
-                                                <strike> {"Item: " + item.food}</strike>
+                                                <strike> {item.food}</strike>
                                                 <h4> ✓</h4>
                                                 <br />
                                             </strong>
@@ -369,7 +370,7 @@ class Main extends React.Component {
                                                 <br />
                                                 <br />
                                                 <div className="recipeImage center-block">
-                                                    <img id="image1" src={recipe.image} />
+                                              <a href= {recipe.shareAs}> <img id="image1" src={recipe.image} /> </a>
                                                 </div>
                                                 <br />
                                                 <div>
