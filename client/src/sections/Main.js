@@ -254,16 +254,13 @@ class Main extends React.Component {
                 </nav>
                 <div id="searchContainer" className="container">
                     <div className="row" >
-                        <h1 className="title">Savor</h1>
-                        <img className="logoImage" src={require("../images/logo.png")} />
+                        <img className="logoImage" src={require("../images/Logo2.png")} />
                     </div>
                     <form onSubmit={this.saveGroceries}>
                         <label htmlFor="enterFoodItem">
-                            <h4>Add Food to Grocery List</h4>
-                            <br />
-                            <input className="inputField" name="foodItem" type="text" value={this.state.foodItem} onChange={this.handleChange} />
-                            <br />
-                            <br />
+                            <h3>Add Food to Grocery List</h3> 
+                            <input className="inputField foodInput" name="foodItem" type="text" value={this.state.foodItem} onChange={this.handleChange} />
+                        
                             <input className="button" type="submit" value="Submit" />
                         </label>
                     </form>
