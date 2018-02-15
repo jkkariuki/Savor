@@ -29,7 +29,7 @@ input {
   }
 
   .logo{
-    z-index: 9000;
+    z-index: 1050;
     position: relative;
     display: block;
     max-width: 100%;

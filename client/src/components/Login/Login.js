@@ -78,15 +78,6 @@ class Login extends React.Component {
         console.log("currentUser HERE:" + currentUser)
         this.props.updateLoggedInUser(currentUser)
     }
-
-    getValidationState() {
-        const length = this.state.username.length;
-        if (length > 10) return 'success';
-        else if (length > 5) return 'warning';
-        else if (length > 0) return 'error';
-        return null;
-      }
-    
     
     
     render() {
@@ -97,6 +88,7 @@ class Login extends React.Component {
         return (
             <div>
                 <BackgroundSlideshow images = {images} />
+                
                 <div className='logoContainer'>
                 <img className='logo img-fluid center-block' src={[Logo]}/>
                 </div>
@@ -104,6 +96,7 @@ class Login extends React.Component {
                 <div className='modal-container'>
 
                 <Modal
+                    backdrop={this.state.backdrop}
                     show={this.state.show}
                     onHide={this.handleHide}
                     container={this}
@@ -115,7 +108,7 @@ class Login extends React.Component {
                 >
 
                 <FormGroup
-                    controlId='fromBasicText'
+                    controlId='formBasicText'
                 >
                 <ControlLabel>Username</ControlLabel>
                 <FormControl
@@ -128,12 +121,13 @@ class Login extends React.Component {
 
                 <ControlLabel>Password</ControlLabel>
                 <FormControl
-                    type='text'
+                    type='password'
                     value={this.state.password}
                     placeholder='Password'
                     name='password'
                     onChange={this.handleInputChange}
                 />
+                
                 <FormControl.Feedback />
                 </ FormGroup>
                 <div>

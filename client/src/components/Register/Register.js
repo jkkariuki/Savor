@@ -43,7 +43,7 @@ class Register extends React.Component {
 
     handleInputChange = (event) => {
         const target = event.target;
-        const value = target.value
+        const value = target.value;
         const name = target.name;
         this.state.username
         this.setState({
@@ -73,8 +73,7 @@ class Register extends React.Component {
 
                 localStorage.setItem('currentUser', res.data);
               
-            })
-            .catch(err => console.log("Save error:" + err));           
+            }).catch(err => console.log("Save error:" + err));           
     }
 
     someFn = () =>{
@@ -97,10 +96,6 @@ class Register extends React.Component {
         if (this.state.redirectTo) {
             return <Redirect to ={{pathname: this.state.redirectTo }} />
         }else{
-        
-        if (this.state.loggedInUser){
-            return <Redirect to = {{ pathname: this.state.redirectTo}}/>
-        }else{
 
         return (
             <div>
@@ -110,7 +105,7 @@ class Register extends React.Component {
                 <img className='logo img-fluid center-block' src={[Logo]}/>
                 </div>
 
-                <div className='modal-container registration-modal'>
+                <div className='modal-container'>
 
                 <Modal
                     backdrop={this.state.backdrop}
@@ -124,7 +119,7 @@ class Register extends React.Component {
                 <form id='register-form' action="/auth/signup" method='post' onSubmit = {this.handleFormSubmit}>
 
                 <FormGroup
-                    controlId='fromBasicText'
+                    controlId='formBasicText'
                     validationState={this.getValidationState()}
                 >
                 <ControlLabel>Username</ControlLabel>
@@ -194,7 +189,7 @@ class Register extends React.Component {
 
     }}
     
-}}
+}
 
 
 export default Register

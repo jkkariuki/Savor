@@ -1,3 +1,4 @@
+
 import axios from "axios";
 
 export default {
@@ -51,8 +52,19 @@ export default {
    },
    
    loginUser: function(user){
-       console.log("log in attempt: " + user.username + user.password )
+       console.log("loggin attempt: " + user.username + user.password )
        return axios.post('/api/login', user);
+   },
+   
+   grabUser: function(){
+       console.log("grab User has been hit")
+       return axios.get('/api/grab');
+   },
+
+   logout: function(currentUser){
+       console.log("logout has been hit")
+       console.log(currentUser)
+       return axios.get('/api/logout', {params: currentUser} )
    }
 
 
