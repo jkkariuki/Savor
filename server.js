@@ -29,8 +29,8 @@ if (process.env.NODE_ENV === 'production'){
 app.use(cookieParser());
 var store = new MongoDBStore(
   {
-    uri: 'mongodb://localhost:27017/connect_mongodb_session_test',
-    collection: 'mySessions'
+    // uri: 'mongodb://localhost:27017/connect_mongodb_session_test',
+    // collection: 'mySessions'
   });
 
 // Catch errors
