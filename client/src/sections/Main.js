@@ -247,10 +247,10 @@ class Main extends React.Component {
          else{
         return (
             <div>
-                <nav class="navbar navbar-light bg-faded">
-                    <form class="form-inline">                    
-                    <button onClick={this.handleLogout} className="btn navbar-right btn-xl btn-lg btn-md align-right btn-outline-secondary" type="button">Logout</button>
-                    </form>
+                <nav className="navbar  navbar-default mainNav">
+                                       
+                    <button onClick={this.handleLogout} className="btn logout pull-right" type="button"><img className="logoLogout" src={require("../images/logo.png")}/>Logout</button>
+                    
                 </nav>
                 <div id="searchContainer" className="container">
                     <div className="row" >
@@ -277,15 +277,15 @@ class Main extends React.Component {
                                     return (
                                         <GroceryItem>
                                             <strong>
-                                                <strike> {"Item: " + item.food}</strike>
+                                                <strike> {item.food}</strike>
                                                 <br />
 
                                             </strong>
-                                            <button className="button"
+                                            <button className="button listButton"
                                                 onClick={() => this.useGroceries(item._id)}
                                             >Query Recipe
                                     </button>
-                                            <button className="button"
+                                            <button className="button listButton"
                                                 onClick={() => this.deleteGroceries(item._id)}
                                             >Delete
                                     </button>
@@ -342,7 +342,7 @@ class Main extends React.Component {
 
 
 
-                        <h4 className="sectionTitle title">Recipes</h4>
+                        <h4 className="sectionTitle title subtitle">Recipes</h4>
                         <br />
                         <Recipes>
 
