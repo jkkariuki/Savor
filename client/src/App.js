@@ -42,12 +42,14 @@ import Auth from "./components/Auth/LoginRegister";
                     return <Auth updateLoggedInUser ={this.updateLoggedInUser.bind(this)} />    
                 }} />
                 <Route exact path="/Main" render={() => {
-                    return <Main userId={this.state.loggedInUser} 
-                    />    
+                    return <Main/>    
                 }}/>
                 </Switch>
                 </div>
             </Router>
+
+           
+  
         );
     }    
 

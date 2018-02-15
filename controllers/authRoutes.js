@@ -125,7 +125,28 @@ const userFunction = {
                         //     return res.json(savedUser)
                         
             })
+        },
+
+        logout: function(req, res){
+            console.log("logout hits backend")
+            console.log(req.query)
+            db.currentUser.deleteMany({"userID": req.query.currentUser})
+                .then(data =>{
+                        res.json(data)
+                    console.log("delete: " + data)
+
+                // req.logout(user_data, functiorn(err){
+                    // res.json(req.user._id)
+                //     console.log("hello");
+                //    console.log( "logout response" + req.res)
+                    
+                    
+                    // return user_data
+                // })
+            })
+                
         }
+
             
 }
 
@@ -157,6 +178,7 @@ passport.deserializeUser((user_data, done) => {
 
 // Fetch current user from session
 // router.get('/api/currentuser', db.getCurrentUser);
+router.get('/api/logout', userFunction.logout)
 router.get('/api/currentuser', userFunction.getUser)
 router.post("/api/signup", userFunction.create)
 router.post('/api/login', passport.authenticate("local"), function(req,res){

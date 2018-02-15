@@ -2,6 +2,7 @@ import React from "react";
 import LoginRegister from "../components/Auth/LoginRegister"
 import API from "../utils/API";
 import PropTypes from 'prop-types';
+import { Redirect } from "react-router-dom";
 import { GroceryList, GroceryItem } from "../components/GroceryList";
 import { Recipes, IndividualRecipes } from "../components/Recipes";
 
@@ -38,24 +39,31 @@ class Main extends React.Component {
             //when this is set to true, the loading spinner will be activated.
             loading: false,
 
-            currentUser: ""
+            currentUser: "",
             //JSON.stringify(localStorage.getItem("currentUser"))
+
+            redirectTo: "",
+
+            loggedIn: true
 
         };
     }
     
 
 
+
     //when the page loads the getGroceries function is called
     componentDidMount() {
-       
         console.log("CURRENT USEERRR" )
         console.log(" PROPS!!!" + this.props.userId)
          this.grabUser();
          
+         
         
         
     }
+
+    
 
 
     // getUser = () => {
@@ -231,50 +239,62 @@ class Main extends React.Component {
     grabUser = () =>{
         API.grabUser()
         .then(res => { 
-            console.log(res.data);
-            const user = res.data.userID
-            this.setState({
-                currentUser: user
-            })
-            console.log("STATE IS HERE : " + this.state.currentUser)
-            this.getGroceries();
             
-        })
-
-
-       
+            if(res.data === null){
+                this.setState({
+                    loggedIn: false,
+                    // redirectTo: "/"
+                })
+                window.location.assign("/");
+            }
+            else{
+                const user = res.data.userID
+                
+                this.setState({
+                    currentUser: user
+                })
+                console.log("STATE IS HERE : " + this.state.currentUser)
+                this.getGroceries();
+            }
+           
+           
+            
+        })   
+        
     }
 
-    // setCurrentUser = (user) =>{
-      
-    //    this.setState({
-    //        currentUser: user
-    //    })
-    //    console.log("currently logged In:" + localStorage.getItem("currentUsers"));
+ 
 
-    // }
-
-    // update = () =>{
-
-    //     this.props.updateLoggedInUser(loggedInUser);
-    //     this.setState({
-    //         currentUser : e.target.value
-    //     })
-
-    //     console.log("recognize mee here: " + localStorage.getItem("currentUsers"))
-    // }
-
-    
-    
-
-
+    handleLogout = () =>{
+        console.log("logout out button hit")
+        API.logout({
+            currentUser: this.state.currentUser
+        }).then(res =>{
+            console.log("SOMETHING!!")
+            this.setState({
+                currentUser: "",
+                redirectTo: "/"
+            })
+            
+        })
+        
+    }
     
 
 
     render() {
+        if (this.state.currentUser === ""|| this.state.loggedIn === false){
+            
+             return <Redirect to = {{ pathname: this.state.redirectTo}}/>;
+         }
+         else{
         return (
             <div>
-                <h3>Welcome {this.props.getCurrentUser}</h3>
+                <nav class="navbar navbar-light bg-faded">
+                    <form class="form-inline">                    
+                    <button onClick={this.handleLogout} className="btn navbar-right btn-xl btn-lg btn-md align-right btn-outline-secondary" type="button">Smaller button</button>
+                    </form>
+                </nav>
                 <div id="searchContainer" className="container">
                     <div className="row" >
                         <h1 className="title">Savor</h1>
@@ -421,6 +441,7 @@ class Main extends React.Component {
 
             </div>
         )
+    }
           
     }
 }

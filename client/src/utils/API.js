@@ -58,6 +58,12 @@ export default {
    grabUser: function(){
        console.log("grab User has been hit")
        return axios.get('/api/grab');
+   },
+
+   logout: function(currentUser){
+       console.log("logout has been hit")
+       console.log(currentUser)
+       return axios.get('/api/logout', {params: currentUser} )
    }
 
 
