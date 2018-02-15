@@ -45,8 +45,6 @@ class Main extends React.Component {
             //the state on redirectTo is changed in the handleLogout function to "/" when the logout button is hit and redirects the user to
             redirectTo: "",
 
-            loggedIn: true
-
         };
     }
     
@@ -55,13 +53,7 @@ class Main extends React.Component {
 
     //when the page loads the getGroceries function is called
     componentDidMount() {
-        console.log("CURRENT USEERRR" )
-        console.log(" PROPS!!!" + this.props.userId)
-         this.grabUser();
-         
-         
-        
-        
+         this.grabUser(); 
     }
 
     
@@ -81,29 +73,24 @@ class Main extends React.Component {
                     savedItems.push(res.data[i])
                 }
                 this.setState({ groceries: savedItems })
-                console.log("groceries " + this.state.groceries);
             })
             .then(() => this.getRecipes(this.state.groceries))
 
     }
 
     deleteGroceries = (item) => {
-        console.log("the main file delete route is being hit" + item);
         API.deleteGroceries(item)
             .then(() => this.getGroceries())
             .catch(err => console.log(err));
     }
 
     purchaseGroceries = (id) => {
-        console.log("purchased item " + id);
         API.updateGroceries(id, { purchased: true })
             .then((res) => console.log(res))
             .then(() => this.getGroceries())
     }
 
     useGroceries = (id) => {
-        console.log("used item " + id);
-
         if (this.state.use === false) {
             this.setState({ use: true })
             API.useGroceries(id, { use: true })
@@ -119,15 +106,10 @@ class Main extends React.Component {
 
 
     handleChange = (event) => {
-        console.log(event);
         const target = event.target;
-        console.log(event.target);
         const value = target.value
-        console.log(target.value);
         const name = target.name;
-        console.log(target.name);
-
-
+    
         this.setState({
             [name]: value
         });
@@ -172,7 +154,7 @@ class Main extends React.Component {
         const context = this;
         //set the state of apiParams to the array of groceries that the user would like to use in their recipe
         this.setState({ apiParams: array })
-        console.log("api parms " + this.state.apiParams);
+       
         //if the length of the paramters is greater than zero set the state of loading to true
         if (this.state.apiParams.length > 0) {
             
@@ -183,25 +165,23 @@ class Main extends React.Component {
                 .then(function (data) {
                     //when that api returns data, set the state of loading to false
                     context.setState({ loading: false })
-                    console.log(data.data);
+                    
                     //if there is api data, and the user is querying recipes loop through the recipes and push them into an array called apiData, then set the state of recipex to the apiData
                     if (data.data.length > 0 && context.state.apiParams.length > 0) {
-                        console.log("this is the api data " + data);
+                      
                         let apiData = []
                         for (let i = 0; i < data.data.length; i++) {
                             apiData.push(data.data[i].recipe)
                         }
-                        console.log(apiData);
+                        
                         context.setState({ recipex: apiData })
                         context.setState({ zeroRecipes: false })
-                        console.log(this.state.recipex)
                     }
 
 
                     //if the user is not querying recipes or no recipes are returned based on user's query call the noRecipes function.
                     else if (context.state.apiParams.length === 0 || data.data.length === 0) {
-                        console.log("No data");
-
+                        
                         context.noRecipes();
                     }
                 })
@@ -217,8 +197,6 @@ class Main extends React.Component {
 
     noRecipes = () => {
         this.setState({ zeroRecipes: true })
-        console.log("burrrrp: " + this.state.zeroRecipes);
-        console.log("use: " + this.state.use);
     }
 
 
@@ -227,10 +205,7 @@ class Main extends React.Component {
         .then(res => { 
             
             if(res.data === null){
-                this.setState({
-                    loggedIn: false,
-                    // redirectTo: "/"
-                })
+                
                 window.location.assign("/");
             }
             else{
@@ -242,9 +217,7 @@ class Main extends React.Component {
                 console.log("STATE IS HERE : " + this.state.currentUser)
                 this.getGroceries();
             }
-           
-           
-            
+    
         })   
         
     }
@@ -252,11 +225,9 @@ class Main extends React.Component {
  
 
     handleLogout = () =>{
-        console.log("logout out button hit")
         API.logout({
             currentUser: this.state.currentUser
         }).then(res =>{
-            console.log("SOMETHING!!")
             this.setState({
                 currentUser: "",
                 redirectTo: "/"
@@ -269,7 +240,7 @@ class Main extends React.Component {
 
 
     render() {
-        if (this.state.currentUser === ""|| this.state.loggedIn === false){
+        if (this.state.currentUser === ""){
             
              return <Redirect to = {{ pathname: this.state.redirectTo}}/>;
          }
@@ -278,7 +249,7 @@ class Main extends React.Component {
             <div>
                 <nav class="navbar navbar-light bg-faded">
                     <form class="form-inline">                    
-                    <button onClick={this.handleLogout} className="btn navbar-right btn-xl btn-lg btn-md align-right btn-outline-secondary" type="button">Smaller button</button>
+                    <button onClick={this.handleLogout} className="btn navbar-right btn-xl btn-lg btn-md align-right btn-outline-secondary" type="button">Logout</button>
                     </form>
                 </nav>
                 <div id="searchContainer" className="container">
