@@ -130,12 +130,17 @@ class Auth extends React.Component {
         
 
                 <form id='register-form' action="/auth/signup" method='post' onSubmit = {this.handleFormSubmit}>
-                    <input type="text" placeholder="Username" required onChange = {this.handleInputChange} name = "username"/>
-                    <input type="email" placeholder="Email" required onChange = {this.handleInputChange} name="email" value = {this.state.email}/>
-                    <input type="password" placeholder="Password" required onChange = {this.handleInputChange} name= "password" value = {this.state.password} />
-                    <input type="password" placeholder="Re Password" required onChange = {this.handleInputChange} name= "confirmPass" value = {this.state.password}/>
-                    <button type='submit'>Register</button>
-                    <label htmlFor='form-switch'>Already Member ? Sign In Now..</label>
+                    <input className="registerInput" type="text" placeholder="Username" required onChange = {this.handleInputChange} name = "username"/>
+                    <br/>
+                    <input className="registerInput" type="email" placeholder="Email" required onChange = {this.handleInputChange} name="email" value = {this.state.email}/>
+                    <br/>
+                    <input className="registerInput" type="password" placeholder="Password" required onChange = {this.handleInputChange} name= "password" value = {this.state.password} />
+                    <br/>
+                    <input className="registerInput" type="password" placeholder="Re Password" required onChange = {this.handleInputChange} name= "confirmPass" value = {this.state.password}/>
+                    <br/>
+                    <button className="loginButton" type='submit'>Register</button>
+                    <br/>
+                    <label className="returnToLogin" htmlFor='form-switch'>Already A Member ? Sign In Now..</label>
                 </form >
             </div>
         )
