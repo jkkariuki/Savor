@@ -112,19 +112,22 @@ class Auth extends React.Component {
         else{
 
         return (
-            <div>
+            <div id="loginContainer">
+
+                <img className="logoImage2" src={require("../../images/Logo2.png")} />
                  
                 <input type='checkbox' id='form-switch'/>
 
-                <form id='login-form' action="" method='post' onSubmit = {this.handleLogIn}>
-                    <h1 className="title">Savor</h1>
-                    <input type="text" placeholder="Username"  required onChange = {this.handleInputChange}
+                <form className= "form-group" id='login-form' action="" method='post' onSubmit = {this.handleLogIn}>
+                    <input className="loginInput" type="text" placeholder="Username"  required onChange = {this.handleInputChange}
                     name= "username" value = {this.state.username}/>
-                    <input type="password" placeholder="Password" required onChange = {this.handleInputChange}
+                    <input className="loginInput" type="password" placeholder="Password" required onChange = {this.handleInputChange}
                     name = "password" value = {this.state.password}/>
-                    <button type='submit'>Login</button>
-                    <label htmlFor='form-switch'><span>Register</span></label>
+                    <button className="loginButton" type='submit'>Login</button>
+                    <br/>
+                    <label className="RegisterButton" htmlFor='form-switch'><span>Register</span></label>
                 </form>
+        
 
                 <form id='register-form' action="/auth/signup" method='post' onSubmit = {this.handleFormSubmit}>
                     <input type="text" placeholder="Username" required onChange = {this.handleInputChange} name = "username"/>

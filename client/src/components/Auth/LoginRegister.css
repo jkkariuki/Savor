@@ -27,3 +27,58 @@ label {
 #form-switch:checked~#login-form {
   display:none
 }
+
+.loginInput{
+  margin-right:5px;
+}
+
+.loginButton{
+  border:none;
+  color:white;
+  margin-right:5px;
+  margin-top:10px;
+  font-family: 'Pacifico', cursive;
+  font-size: 30px;
+  background: rgba(0,0,0,0.0); 
+}
+
+.RegisterButton{
+  border:none;
+  color:white;
+  margin-right:5px;
+  margin-top:5px;
+  font-family: 'Pacifico', cursive;
+  font-size: 30px;
+  background: rgba(0,0,0,0.0); 
+  margin-bottom:10px;
+}
+
+.logoImage2{
+  margin-top:30px;
+    margin-bottom:0px;
+    height: 350px;
+    width:600px;
+}
+
+@media only screen and (max-width: 700px) {
+ .logoImage2 {
+  margin-top:80px;
+  margin-bottom:0px;
+  height: 150px;
+  width:300px;
+  }
+}
+
+#loginContainer{
+  height:500px;
+  margin-top:10px;
+  margin-right:10px;
+  margin-left:10px;
+  background-image: url("../../images/1.jpg");
+  color:rgb(255, 225, 0);
+  text-align:center;
+  border-radius: 10px;
+  margin-bottom:2%;
+  font-family: 'Open Sans', sans-serif;
+  border:solid rgb(255, 225, 0) 3px;
+}
