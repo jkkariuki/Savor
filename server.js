@@ -1,5 +1,3 @@
-import { setInterval } from "timers";
-
 const express = require("express");
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -29,11 +27,11 @@ if (process.env.NODE_ENV === 'production'){
 
 // Cookie Parser middleware initialization
 app.use(cookieParser());
-// var store = new MongoDBStore(
-//   {
-//     // uri: 'mongodb://localhost:27017/connect_mongodb_session_test',
-//     // collection: 'mySessions'
-//   });
+var store = new MongoDBStore(
+  {
+    // uri: 'mongodb://localhost:27017/connect_mongodb_session_test',
+    // collection: 'mySessions'
+  });
 
 // Catch errors
 
@@ -115,9 +113,6 @@ app.use('/api', authRoutes);
 app.get('*', function (request, response) {
   response.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
 });
-
-
-
 
 // Start the API server
 app.listen(PORT, function () {
