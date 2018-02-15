@@ -302,7 +302,7 @@ class Main extends React.Component {
                                                 <h4> ✓</h4>
                                                 <br />
                                             </strong>
-                                            <button className="button"
+                                            <button className="button listButton"
                                                 onClick={() => this.useGroceries(item._id)}
                                             >Remove from Recipe
                                     </button>
@@ -323,11 +323,11 @@ class Main extends React.Component {
                                                 <br />
 
                                             </strong>
-                                            <button className="button"
+                                            <button className="button listButton"
                                                 onClick={() => this.purchaseGroceries(item._id)}
                                             >Purchased
                                     </button>
-                                            <button className="button"
+                                            <button className="button listButton"
                                                 onClick={() => this.deleteGroceries(item._id)}
                                             >Delete
                                     </button>
