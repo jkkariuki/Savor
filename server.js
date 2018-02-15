@@ -1,3 +1,5 @@
+import { setInterval } from "timers";
+
 const express = require("express");
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -113,6 +115,19 @@ app.use('/api', authRoutes);
 app.get('*', function (request, response) {
   response.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
 });
+
+// I hope this works
+function sessionCleanup() {
+  sessionStore.all(function(err, sessions) {
+      for (var i = 0; i < sessions.length; i++) {
+          sessionStore.get(sessions[i], function() {} );
+      }
+  });
+}
+
+setInterval(sessionCleanup(), 500000)
+
+
 
 // Start the API server
 app.listen(PORT, function () {
