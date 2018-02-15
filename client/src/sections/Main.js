@@ -1,10 +1,16 @@
 import React from "react";
+import LoginRegister from "../components/Auth/LoginRegister"
 import API from "../utils/API";
+import PropTypes from 'prop-types';
+import { Redirect } from "react-router-dom";
 import { GroceryList, GroceryItem } from "../components/GroceryList";
 import { Recipes, IndividualRecipes } from "../components/Recipes";
 
 
+
+ 
 class Main extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -26,25 +32,49 @@ class Main extends React.Component {
             //Use is also set as a default in the db to false. It toggled by the useGroceries function, which can only be can only be clicked if an item is purchased. If clicked by the user, the event will call the useGroceries function which updates/ toggle use in the database.
             use: false,
 
+
             //This boolean is used to display no recipe response
             zeroRecipes: false,
 
             //when this is set to true, the loading spinner will be activated.
-            loading: false
+            loading: false,
+
+            currentUser: "",
+            //JSON.stringify(localStorage.getItem("currentUser"))
+
+            //the state on redirectTo is changed in the handleLogout function to "/" when the logout button is hit and redirects the user to
+            redirectTo: "",
+
+            loggedIn: true
 
         };
     }
+    
+
 
 
     //when the page loads the getGroceries function is called
     componentDidMount() {
-        this.getGroceries();
+        console.log("CURRENT USEERRR" )
+        console.log(" PROPS!!!" + this.props.userId)
+         this.grabUser();
+         
+         
+        
+        
     }
+
+    
+
+
 
     //this function retrieves groceries from the database, loops through them, pushes them to an array and then updates the states of groceries with that array.
 
     getGroceries = () => {
-        API.getGroceries()
+
+        API.getGroceries({
+              currentUser: this.state.currentUser
+        })
             .then(res => {
                 let savedItems = []
                 for (let i = 0; i < res.data.length; i++) {
@@ -104,12 +134,14 @@ class Main extends React.Component {
     }
 
     saveGroceries = (event) => {
-        event.preventDefault();
+        event.preventDefault();        
 
         API.saveGroceries({
+            user: this.state.currentUser,
             food: this.state.foodItem,
             purchased: false
         })
+
             .then(() => this.getGroceries())
             .then(this.setState({ foodItem: "" }))
             .catch(err => console.log("Save error:" + err))
@@ -143,7 +175,7 @@ class Main extends React.Component {
         console.log("api parms " + this.state.apiParams);
         //if the length of the paramters is greater than zero set the state of loading to true
         if (this.state.apiParams.length > 0) {
-            // this.setState({ zeroRecipes: false })
+            
             this.setState({ loading: true })
             API.getRecipes({
                 food: this.state.apiParams
@@ -151,7 +183,7 @@ class Main extends React.Component {
                 .then(function (data) {
                     //when that api returns data, set the state of loading to false
                     context.setState({ loading: false })
-
+                    console.log(data.data);
                     //if there is api data, and the user is querying recipes loop through the recipes and push them into an array called apiData, then set the state of recipex to the apiData
                     if (data.data.length > 0 && context.state.apiParams.length > 0) {
                         console.log("this is the api data " + data);
@@ -182,6 +214,7 @@ class Main extends React.Component {
 
     }
 
+
     noRecipes = () => {
         this.setState({ zeroRecipes: true })
         console.log("burrrrp: " + this.state.zeroRecipes);
@@ -189,10 +222,65 @@ class Main extends React.Component {
     }
 
 
+    grabUser = () =>{
+        API.grabUser()
+        .then(res => { 
+            
+            if(res.data === null){
+                this.setState({
+                    loggedIn: false,
+                    // redirectTo: "/"
+                })
+                window.location.assign("/");
+            }
+            else{
+                const user = res.data.userID
+                
+                this.setState({
+                    currentUser: user
+                })
+                console.log("STATE IS HERE : " + this.state.currentUser)
+                this.getGroceries();
+            }
+           
+           
+            
+        })   
+        
+    }
+
+ 
+
+    handleLogout = () =>{
+        console.log("logout out button hit")
+        API.logout({
+            currentUser: this.state.currentUser
+        }).then(res =>{
+            console.log("SOMETHING!!")
+            this.setState({
+                currentUser: "",
+                redirectTo: "/"
+            })
+            
+        })
+        
+    }
+    
+
 
     render() {
+        if (this.state.currentUser === ""|| this.state.loggedIn === false){
+            
+             return <Redirect to = {{ pathname: this.state.redirectTo}}/>;
+         }
+         else{
         return (
             <div>
+                <nav class="navbar navbar-light bg-faded">
+                    <form class="form-inline">                    
+                    <button onClick={this.handleLogout} className="btn navbar-right btn-xl btn-lg btn-md align-right btn-outline-secondary" type="button">Smaller button</button>
+                    </form>
+                </nav>
                 <div id="searchContainer" className="container">
                     <div className="row" >
                         <h1 className="title">Savor</h1>
@@ -334,6 +422,11 @@ class Main extends React.Component {
             </div>
         )
     }
+          
+    }
 }
 
 export default Main;
+Main.props = {
+    updateLoggedInUser: PropTypes.string,
+}

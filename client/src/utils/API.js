@@ -9,9 +9,9 @@ export default {
    },
 
    //create a route for getting groceries from database
-   getGroceries: function(){
-       console.log("the get grocery route has been hit");
-       return axios.get("/api/groceries");
+   getGroceries: function(currentUser){
+       console.log("SOMETHING NOTICEABLE " + currentUser.currentUser)
+       return axios.get("/api/groceries", {params :currentUser});
    },
 
    //create a route for deleting groceries from database
@@ -38,6 +38,32 @@ export default {
        console.log("API food "+ groceryItem);
        console.log("the get recipe route has been hit" + groceryItem);
        return axios.get("/api/recipes", {params: groceryItem});
+   },
+   // User API calls
+   getCurrentUser: function(){
+       console.log("user router has been hit!!")
+       return axios.get('/api/currentuser');
+   },
+
+   addNewUser: function(user){
+       console.log(user)
+       return axios.post("/api/signup", { user });
+   },
+   
+   loginUser: function(user){
+       console.log("loggin attempt: " + user.username + user.password )
+       return axios.post('/api/login', user);
+   },
+   
+   grabUser: function(){
+       console.log("grab User has been hit")
+       return axios.get('/api/grab');
+   },
+
+   logout: function(currentUser){
+       console.log("logout has been hit")
+       console.log(currentUser)
+       return axios.get('/api/logout', {params: currentUser} )
    }
 
 

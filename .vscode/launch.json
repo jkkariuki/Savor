@@ -8,6 +8,16 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Launch Program",
+            "program": "${file}",
+            "cwd": "${fileDirname}",
+            "protocol": "inspector",
+            "args": [],
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "yarn",
             "runtimeExecutable": "yarn",
             "runtimeArgs": [
