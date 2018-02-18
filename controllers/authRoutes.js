@@ -136,7 +136,7 @@ router.post('/api/login', passport.authenticate("local"), function (req, res) {
 
     res.json(req.user._id)
 })
-// router.get('/user', userFunction.getUser)
+
 
 
 router.use(function (req, res) {

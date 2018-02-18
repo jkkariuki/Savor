@@ -93,8 +93,7 @@ mongoose.connect(dbURI)
   .then(() => console.log('connected to DB!'))
   .catch((err) => console.log(err));
 
-// app.use('/api', savorController);
-// app.use('/api', authRoutes);
+
 app.get('*', function (request, response) {
   response.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
 });
