@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -94,9 +93,6 @@ mongoose.connect(dbURI)
   .catch((err) => console.log(err));
 
 
-app.get('*', function (request, response) {
-  response.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-});
 
 // Start the API server
 app.listen(PORT, function () {
