@@ -4,7 +4,6 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require('cookie-session')
-// var MongoDBStore = require('connect-mongodb-session')(session);
 const PORT = process.env.PORT || 3001;
 const app = express();
 const LocalStrategy = require('passport-local').Strategy;
@@ -94,8 +93,8 @@ mongoose.connect(dbURI)
   .then(() => console.log('connected to DB!'))
   .catch((err) => console.log(err));
 
-app.use('/api', savorController);
-app.use('/api', authRoutes);
+// app.use('/api', savorController);
+// app.use('/api', authRoutes);
 app.get('*', function (request, response) {
   response.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
 });
