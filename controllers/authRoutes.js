@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const saltRounds = 10;
 const passport = require('passport');
-mongoose.Promise = global.Promise;
+
 
 
 
