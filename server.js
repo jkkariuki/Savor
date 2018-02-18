@@ -15,10 +15,9 @@ require('dotenv').config();
 
 
 // Configure body parser for axios requests
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
+
 if (process.env.NODE_ENV === 'production'){
   app.use(express.static('client/build'));
 }
@@ -83,7 +82,7 @@ passport.use(new LocalStrategy(
 
 
 // Set up promises with mongoose
-mongoose.Promise = Promise;
+mongoose.Promise = global.Promise;
 // Connect to the Mongo DB
 
 const dbURI = process.env.MONGODB_URI || 'mongodb://localhost/savordb';
