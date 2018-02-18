@@ -32,6 +32,7 @@ class Auth extends React.Component {
         });
       };
 
+      //this function is passing new user data to a post route in the api page
       handleFormSubmit = (event) => {
         const self = this;
         

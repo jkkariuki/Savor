@@ -1436,6 +1436,7 @@ chokidar@^1.6.0, chokidar@^1.7.0:
     is-glob "^2.0.0"
     path-is-absolute "^1.0.0"
     readdirp "^2.0.0"
+    
   optionalDependencies:
     fsevents "^1.0.0"
 

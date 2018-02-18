@@ -27,29 +27,16 @@ if (process.env.NODE_ENV === 'production'){
 
 // Cookie Parser middleware initialization
 app.use(cookieParser());
-// var store = new MongoDBStore(
-//   {
-//     // uri: 'mongodb://localhost:27017/connect_mongodb_session_test',
-//     // collection: 'mySessions'
-//   });
 
-// Catch errors
 
-//***************************** */
-// store.on('error', function(error) {
-//   assert.ifError(error);
-//   assert.ok(false);
-// });
-//***************************** */
 
 
 // Initialize express session
 app.use(session({
   secret: 'keyboard cat',
-  // store: store,
   resave: false,
   saveUninitialized: false,
-  //cookie: { secure: true }
+  
 }))
 
 // Initialize Passport
@@ -60,7 +47,7 @@ app.use(passport.session());
 app.use(savorController, authRoutes);
 
 const User = require('./models/user');
-// passport.use(new LocalStrategy(User.authenticate()));
+
 passport.use(new LocalStrategy(
   function(username, password, done) {
     console.log("login username: " + username)

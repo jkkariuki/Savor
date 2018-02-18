@@ -93,10 +93,6 @@ router.patch("/api/useGroceries:id", foodFunction.use)
 router.get('/api/grab', foodFunction.grabUser)
 
 
-// If no API routes are hit, send the React app
-// router.use(function (req, res) {
-//     console.log("something is off");
-//     res.sendFile(path.join(__dirname, "../client/public/index.html"));
-// });
+
 
 module.exports = router;
