@@ -139,9 +139,9 @@ router.post('/api/login', passport.authenticate("local"), function (req, res) {
 
 
 
-router.use(function (req, res) {
-    console.log("something is on");
-    res.sendFile(path.join(__dirname, "../client/public/index.html"));
-});
+// router.use(function (req, res) {
+//     console.log("something is on");
+//     res.sendFile(path.join(__dirname, "../client/public/index.html"));
+// });
 
 module.exports = router;

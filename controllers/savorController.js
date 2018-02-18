@@ -91,6 +91,11 @@ router.patch("/api/groceries:id", foodFunction.update)
 router.patch("/api/useGroceries:id", foodFunction.use)
 router.get('/api/grab', foodFunction.grabUser)
 
+router.use(function (req, res) {
+    console.log("something is on");
+    res.sendFile(path.join(__dirname, "../client/public/index.html"));
+});
+
 
 
 
