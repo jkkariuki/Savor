@@ -9,6 +9,9 @@ const passport = require('passport');
 
 
 
+
+
+
 // Request user info
 const userFunction = {
 
@@ -21,6 +24,7 @@ const userFunction = {
             .then(data => {
 
                 console.log("hello")
+                console.log("This is the signed in user data++++" + data)
                 console.log("last signin" + data._id);
                 res.json(data._id)
             })
@@ -123,6 +127,7 @@ router.post('/api/login', passport.authenticate("local"), function (req, res) {
     console.log("auth")
     console.log("This is Authenticate :" + req.user)
     console.log("This is Authenticate 2: " + req.user._id)
+    console.log("This is Authenticate 3 " + req.user.password)
     const currentUser = {
         userID: req.user._id
     }
@@ -140,6 +145,7 @@ router.use(function (req, res) {
     console.log("something is on");
     res.sendFile(path.join(__dirname, "../client/public/index.html"));
 });
+
 
 
 module.exports = router;

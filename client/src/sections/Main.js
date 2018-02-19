@@ -1,5 +1,5 @@
 import React from "react";
-import LoginRegister from "../components/Auth/LoginRegister"
+// import LoginRegister from "../components/Auth/LoginRegister"
 import API from "../utils/API";
 import PropTypes from 'prop-types';
 import { Redirect } from "react-router-dom";
@@ -204,7 +204,6 @@ class Main extends React.Component {
     grabUser = () =>{
         API.grabUser()
         .then(res => { 
-            
             if(res.data === null){
                 window.location.assign("/");
             }

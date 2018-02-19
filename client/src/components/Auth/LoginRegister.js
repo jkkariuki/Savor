@@ -80,7 +80,7 @@ class Auth extends React.Component {
                   })
             }             
               
-              self.someFn(this.state.isLoggedIn)
+              this.someFn(this.state.isLoggedIn)
             }).catch(err => console.log("Save error:" + err));             
     }
 
