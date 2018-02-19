@@ -206,7 +206,6 @@ class Main extends React.Component {
         .then(res => { 
             
             if(res.data === null){
-                
                 window.location.assign("/");
             }
             else{
