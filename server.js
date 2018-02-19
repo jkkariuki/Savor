@@ -43,6 +43,7 @@ app.use(passport.session());
 // Add routes, both API and view
 app.use(savorController, authRoutes);
 
+
 const User = require('./models/user');
 
 passport.use(new LocalStrategy(
@@ -80,9 +81,8 @@ passport.use(new LocalStrategy(
 
 
 
-
 // Set up promises with mongoose
-mongoose.Promise = global.Promise;
+mongoose.Promise = Promise;
 // Connect to the Mongo DB
 
 const dbURI = process.env.MONGODB_URI || 'mongodb://localhost/savordb';
@@ -90,6 +90,7 @@ const dbURI = process.env.MONGODB_URI || 'mongodb://localhost/savordb';
 mongoose.connect(dbURI)
   .then(() => console.log('connected to DB!'))
   .catch((err) => console.log(err));
+
 
 
 

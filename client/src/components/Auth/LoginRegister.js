@@ -48,9 +48,7 @@ class Auth extends React.Component {
               this.setState({
                 username: "",
                 password: "",
-                email: "",
-                //loggedInUser: currentUser,
-                // redirectTo: "/"                
+                email: ""               
                 })
             
                           
