@@ -132,6 +132,7 @@ router.post('/api/login', passport.authenticate("local"), function (req, res) {
         userID: req.user._id
     }
     console.log("ID HERE: " + currentUser)
+    
     db.currentUser.create(currentUser)
         .then(dbModel =>
             console.log(dbModel))
