@@ -6,12 +6,6 @@ const mongoose = require('mongoose');
 const saltRounds = 10;
 const passport = require('passport');
 
-
-
-
-
-
-
 // Request user info
 const userFunction = {
 
@@ -116,10 +110,6 @@ passport.deserializeUser((user_data, done) => {
     )
 })
 
-
-
-
-
 router.get('/api/logout', userFunction.logout)
 router.get('/api/currentuser', userFunction.getUser)
 router.post("/api/signup", userFunction.create)
@@ -141,6 +131,8 @@ router.post('/api/login', passport.authenticate("local"), function (req, res) {
 
     res.json(req.user._id)
 })
+
+
 
 router.use(function (req, res) {
     console.log("something is on");

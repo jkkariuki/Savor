@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const passportLocalMongoose = require('passport-local-mongoose');
+const bcrypt = require('bcrypt');
+
 
 // const bcrypt = require('bcryptjs');
 
@@ -11,9 +13,9 @@ const User = new Schema ({
 });
 
 User.plugin(passportLocalMongoose);
-User.methods.validPassword = function( pwd ) {
+User.methods.validPassword = function(pwd) {
     // EXAMPLE CODE!
-    return ( this.password === pwd );
+    return bcrypt.compareSync(pwd, this.password);
 };
 
 
