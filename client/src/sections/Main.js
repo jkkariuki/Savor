@@ -133,7 +133,7 @@ class Main extends React.Component {
 
 
     getRecipes = (groceries) => {
-        console.log(groceries);
+    
         let array = []
 
         //map over the grocery list, if the item has been purchased and the user would like to get recipes using the item, push it into array
@@ -164,7 +164,6 @@ class Main extends React.Component {
             })
                 .then(function (data) {
                     //when that api returns data, set the state of loading to false
-                    console.log(data.data);
                     context.setState({ loading: false })
                     
                     //if there is api data, and the user is querying recipes loop through the recipes and push them into an array called apiData, then set the state of recipex to the apiData
@@ -213,7 +212,6 @@ class Main extends React.Component {
                 this.setState({
                     currentUser: user
                 })
-                console.log("STATE IS HERE : " + this.state.currentUser)
                 this.getGroceries();
             }
     
@@ -282,7 +280,7 @@ class Main extends React.Component {
                                             </strong>
                                             <button className="button listButton"
                                                 onClick={() => this.useGroceries(item._id)}
-                                            >Query Recipe
+                                            >Get Recipes
                                     </button>
                                             <button className="button listButton"
                                                 onClick={() => this.deleteGroceries(item._id)}

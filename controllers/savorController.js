@@ -9,13 +9,11 @@ const foodFunction = {
         //this route makes a call to the api based on a user's grocery list.
         const ingredients = req.query.food;
        
-        console.log(ingredients);
        
         
 
         axios.get("https://api.edamam.com/search?q=" + ingredients + "&app_id=" + process.env.EDAMAM_ID + "&app_key=" + process.env.EDAMAM_KEY)
             .then(function (response) {
-                // console.log(response.data.hits);
                 res.json(response.data.hits);
             }).catch(function (err) {
                 console.log(err);
@@ -24,8 +22,8 @@ const foodFunction = {
 
 
     create: function (req, res) {
-        //this route saves the groceries
-        console.log("the create route is being hit");
+        //this route saves the groceries.
+       
         console.log(req.body);
         db.grocerylist
             .create(req.body)
@@ -35,20 +33,18 @@ const foodFunction = {
     },
 
     read: function (req, res) {
-        console.log("this should be the body " + req.query.currentUser)
-      //this route sends database grocery items to front end
+      //this route sends database grocery items to front end.
      
         db.grocerylist            
             .find({"user":  req.query.currentUser})
             .then(function (response) {
-                console.log(response)
                 res.json(response)
             })
             .catch(err => res.status(422).json(err))
     },
 
     update: function (req, res){
-        console.log("the update route has been hit");
+        //this route updates the database as to whether an item has been purchased.
         db.grocerylist
         .findOneAndUpdate({ _id: req.params.id }, req.body)
         .then(dbModel => res.json(dbModel))
@@ -56,7 +52,7 @@ const foodFunction = {
     },
 
     use: function(req, res){
-        console.log("the use route has been hit");
+        //this route updates the database as to whether an item is being used to get recipes.
         db.grocerylist
         .findOneAndUpdate({ _id: req.params.id }, req.body)
         .then(dbModel => res.json(dbModel))
@@ -65,8 +61,6 @@ const foodFunction = {
 
     delete: function (req, res) {
         //this route deletes groceries from the database.
-        console.log("hello");
-        console.log(req.params.id);
        db.grocerylist
             .findById({ _id: req.params.id})
             .then(dbModel => dbModel.remove())
@@ -75,7 +69,8 @@ const foodFunction = {
     },
 
     grabUser: function(req, res){
-        console.log("grab user route hit on backend")
+        //this route grabs the id of the most recently logged in user
+
         db.currentUser
             .findOne().sort({_id: -1})
             .then(dbModel => res.json(dbModel))
