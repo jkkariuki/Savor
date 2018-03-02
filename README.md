@@ -1,7 +1,7 @@
 Savor
 
 Grocery Item app that allows users to find recipes based on items currently in their food pantry. 
-About
+
 The app uses the Edamam API which boasts a robust database of recipes.
 
 Live Link
